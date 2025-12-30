@@ -1,0 +1,1414 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage[utf-8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{pmboxdraw}
+\usepackage[french]{babel}
+\usepackage{geometry}
+\usepackage{hyperref}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{tocloft}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{array}
+\usepackage{listings}
+\usepackage{xurl}
+
+% Margins
+\geometry{top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm}
+
+% Header and Footer
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{\textit{AtlasFreelanceApp - Guide Complet}}
+\lhead{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Colors
+\definecolor{darkblue}{RGB}{0, 51, 102}
+\definecolor{lightblue}{RGB}{230, 240, 250}
+\definecolor{accentgreen}{RGB}{46, 125, 50}
+
+% Title formatting
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries\color{darkblue}}
+  {\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titleformat{\section}
+  {\normalfont\Large\bfseries\color{darkblue}}
+  {\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\large\bfseries\color{accentgreen}}
+  {\thesubsection}{1em}{}
+
+% Table styling
+\newcommand{\tablehead}[1]{\cellcolor{darkblue}\textcolor{white}{\textbf{#1}}}
+
+% Code listing
+\lstset{
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  keywordstyle=\color{blue},
+  commentstyle=\color{gray},
+  stringstyle=\color{red},
+  showstringspaces=false,
+  language=javascript
+}
+
+\title{%
+  \textcolor{darkblue}{\textbf{\Huge ATLASFREELANCEAPP}}\\
+  \vspace{0.5cm}
+  \textcolor{accentgreen}{\textbf{\Large Guide Complet des Pages de l'Application}}\\
+  \vspace{0.3cm}
+  {\normalsize Plateforme de Freelancing en Afrique du Nord}
+}
+
+\author{%
+  \textbf{Version:} 1.0\\
+  \textbf{Date:} Décembre 2025\\
+  \textbf{Plateforme:} Web (React) + Mobile (React Native)
+}
+
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\newpage
+
+\tableofcontents
+
+\newpage
+
+\chapter{Pages Publiques}
+
+\section{Page 1: Accueil (Landing Page)}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/}
+  \item \textbf{Accès:} Public (avant et après connexion)
+\end{itemize}
+
+\subsection{Structure de la Page}
+
+\subsubsection{En-tête (Header)}
+\begin{itemize}
+  \item Logo AtlasFreelanceApp + nom plateforme
+  \item Menu navigation: Accueil, Comment ça marche, À propos, Contact
+  \item Boutons: ``S'inscrire'' | ``Connexion'' (si déjà inscrit)
+\end{itemize}
+
+\subsubsection{Section Héro}
+\begin{itemize}
+  \item Titre: ``Connectez les meilleurs talents avec les meilleures opportunités''
+  \item Sous-titre: ``La plateforme de freelancing de confiance en Afrique du Nord''
+  \item Deux CTA boutons:
+  \begin{itemize}
+    \item ``Je cherche du travail'' (vers inscription freelancer)
+    \item ``Je cherche des talents'' (vers inscription client)
+  \end{itemize}
+  \item Image/vidéo de démonstration
+\end{itemize}
+
+\subsubsection{Section ``Comment ça marche''}
+
+\paragraph{Pour Freelancer:}
+\begin{enumerate}
+  \item Créer un profil (5 min)
+  \item Recevoir des demandes (passif)
+  \item Postuler aux projets (actif)
+  \item Être payé rapidement (sécurisé)
+\end{enumerate}
+
+\paragraph{Pour Client:}
+\begin{enumerate}
+  \item Publier un projet (2 min)
+  \item Recevoir des candidatures
+  \item Choisir un freelancer
+  \item Payer en toute sécurité
+\end{enumerate}
+
+\subsubsection{Section ``Catégories''}
+Grille 3x3 des catégories principales:
+\begin{itemize}
+  \item Développement Web et Mobile
+  \item Design Graphique et Illustration
+  \item Marketing Digital
+  \item Rédaction et Traduction
+  \item Gestion de Projet
+  \item Consultation
+  \item Support Client
+  \item Autres Services
+\end{itemize}
+
+\subsubsection{Section ``Derniers Projets''}
+Slider de 6--8 projets récents incluant:
+\begin{itemize}
+  \item Titre du projet
+  \item Budget alloué
+  \item Compétences requises (tags)
+  \item Nombre de candidatures
+  \item Photo/avatar du client en mini
+\end{itemize}
+
+\subsubsection{Section ``Statistiques''}
+Compteurs animés affichant:
+\begin{itemize}
+  \item X+ freelancers vérifiés
+  \item X+ projets complétés
+  \item X+ millions MAD versés
+  \item X+ clients satisfaits
+\end{itemize}
+
+\subsubsection{Section ``Témoignages''}
+3--4 cartes de témoignages incluant:
+\begin{itemize}
+  \item Avatar utilisateur
+  \item Nom + rôle (Freelancer / Client)
+  \item Citation (max 150 caractères)
+  \item Note 5 étoiles
+  \item Logo entreprise (si client)
+\end{itemize}
+
+\subsubsection{Section ``FAQ''}
+5--6 questions/réponses déroulantes:
+\begin{itemize}
+  \item Comment s'inscrire?
+  \item Comment fonctionne la sécurité de paiement?
+  \item Quels sont les frais?
+  \item Comment retirer mes gains?
+  \item Comment fonctionne la médiation?
+\end{itemize}
+
+\subsubsection{Pied de page (Footer)}
+\begin{itemize}
+  \item Liens légaux: CGU, Politique de confidentialité, Mentions légales
+  \item Contact: email, téléphone, réseaux sociaux
+  \item Copyright AtlasFreelanceApp
+\end{itemize}
+
+\newpage
+
+\section{Page 2: Comment ça marche (Détails)}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/how-it-works}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Contenu}
+
+\subsubsection{Section Freelancer}
+Timeline verticale ou horizontale détaillant:
+\begin{enumerate}
+  \item S'inscrire \& créer un profil
+  \item Ajouter compétences, tarifs, portfolio
+  \item Rechercher et postuler aux projets
+  \item Signer le contrat \& collaborer
+  \item Être payé (virement bancaire, portefeuille)
+\end{enumerate}
+
+Chaque étape inclut une capture d'écran annotée.
+
+\subsubsection{Section Client}
+Timeline parallèle détaillant:
+\begin{enumerate}
+  \item S'inscrire \& créer un profil d'entreprise
+  \item Publier un projet
+  \item Recevoir candidatures \& choisir un freelancer
+  \item Collaborer \& valider les jalons
+  \item Payer \& évaluer
+\end{enumerate}
+
+\subsubsection{Section ``Avantages AtlasFreelanceApp''}
+6 cartes présentant:
+\begin{itemize}
+  \item Paiement sécurisé (Stripe, PCI-DSS)
+  \item Freelancers vérifiés (KYC/AML)
+  \item Support 24/7
+  \item Pas de commission cachée
+  \item Contrats digitaux
+  \item Médiation gratuite en cas de litige
+\end{itemize}
+
+\section{Page 3: À propos}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/about}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Contenu}
+
+\subsubsection{Vision \& Mission}
+\begin{itemize}
+  \item \textbf{Vision:} Devenir la plateforme de référence pour le freelancing en Afrique du Nord en créant un écosystème de confiance où les talents rencontrent les opportunités.
+  \item \textbf{Mission:} Connecter les meilleurs freelancers marocains et africains avec des clients locaux et internationaux, en offrant une plateforme sécurisée et favorable au développement professionnel.
+\end{itemize}
+
+\subsubsection{Présentation Équipe}
+3--5 photos + noms + rôles des fondateurs/leads.
+
+\subsubsection{Chiffres Clés}
+\begin{itemize}
+  \item Croissance du marché freelance au Maroc
+  \item Impact social (emploi créé, revenus générés)
+  \item Couverture géographique
+\end{itemize}
+
+\subsubsection{Partenaires \& Accréditations}
+\begin{itemize}
+  \item Logos Stripe, AWS, partenaires locaux
+  \item Certifications de sécurité
+\end{itemize}
+
+\section{Page 4: Tarifs \& Commission}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/pricing}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Commission Plateforme}
+
+\begin{table}[h]
+  \centering
+  \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \tablehead{Élément} & \tablehead{Détail} \\
+    \hline
+    Commission & 10\% du montant du projet \\
+    \hline
+    Frais de retrait & 1\% après 2 retraits/mois (gratuit pour les 2 premiers) \\
+    \hline
+    Frais dépôt & 2--3\% selon la méthode de paiement \\
+    \hline
+    Exemple & Projet 1000 MAD → Freelancer reçoit 900 MAD \\
+    \hline
+  \end{tabularx}
+  \caption{Structure de commission et frais}
+\end{table}
+
+\subsection{Plans Premium Freelancer (Optionnel - Phase 2)}
+
+\begin{table}[h]
+  \centering
+  \begin{tabularx}{\textwidth}{|l|X|X|X|}
+    \hline
+    \tablehead{Feature} & \tablehead{Basic (Gratuit)} & \tablehead{Pro (9.99 MAD)} & \tablehead{Business (29.99 MAD)} \\
+    \hline
+    Candidatures/mois & 5 & Illimitées & Illimitées \\
+    \hline
+    Profil & Normal & Top dans recherche & Portfolio premium \\
+    \hline
+    Badge & Non & Sélectionné & Spécialisé \\
+    \hline
+  \end{tabularx}
+  \caption{Plans d'abonnement freelancer}
+\end{table}
+
+\newpage
+
+\chapter{Authentification}
+
+\section{Page 5: Inscription - Choix du Rôle}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/signup}
+  \item \textbf{Accès:} Public (avant connexion)
+\end{itemize}
+
+\subsection{Contenu}
+
+\subsubsection{Deux Boutons Principaux}
+
+\begin{enumerate}
+  \item \textbf{``Je suis Freelancer''} (couleur primaire)
+  \begin{itemize}
+    \item Redirection vers \texttt{/signup/freelancer}
+    \item Message: ``Rejoignez des milliers de freelancers gagnant un revenu stable''
+  \end{itemize}
+  
+  \item \textbf{``Je suis Client''} (couleur secondaire)
+  \begin{itemize}
+    \item Redirection vers \texttt{/signup/client}
+    \item Message: ``Trouvez les meilleurs talents pour vos projets''
+  \end{itemize}
+\end{enumerate}
+
+\subsubsection{Lien Navigation}
+Lien bas: ``Déjà inscrit? Connectez-vous ici'' $\rightarrow$ \texttt{/login}
+
+\section{Page 6: Inscription Freelancer}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/signup/freelancer}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Formulaire Multi-étape (3 étapes)}
+
+\subsubsection{Étape 1: Informations de Base}
+\begin{itemize}
+  \item Email (validation)
+  \item Mot de passe (min 8 caractères, 1 majuscule, 1 chiffre, 1 spécial)
+  \item Confirmer mot de passe
+  \item Checkbox: ``J'accepte les CGU et Politique de confidentialité''
+  \item Bouton: ``Continuer''
+\end{itemize}
+
+\subsubsection{Étape 2: Profil Freelancer}
+\begin{itemize}
+  \item Prénom
+  \item Nom
+  \item Photo de profil (upload)
+  \item Bio courte (max 200 caractères)
+  \item Titre professionnel (ex: ``Développeur React Senior'')
+  \item Pays + Ville
+  \item Bouton: ``Continuer''
+\end{itemize}
+
+\subsubsection{Étape 3: Compétences \& Tarifs}
+\begin{itemize}
+  \item Ajouter compétences (min 1, max 10)
+  \begin{itemize}
+    \item Sélectionner de liste prédéfinie ou ajouter custom
+    \item Niveau (Débutant / Intermédiaire / Avancé / Expert)
+  \end{itemize}
+  \item Tarif horaire minimum (montant en MAD)
+  \item Disponibilité (heures/semaine)
+  \item Bouton: ``Finaliser''
+\end{itemize}
+
+\subsection{Éléments Additionnels}
+
+\subsubsection{Side Panel (Desktop)}
+Progression: étape 1/3, 2/3, 3/3 avec barres de progression.
+
+\subsubsection{Pop-up Confirmation Email}
+Après validation:
+\begin{quote}
+  ``Vérifiez votre email. Cliquez sur le lien de confirmation pour activer votre compte.''
+\end{quote}
+
+Lien dans email: \url{https://app.atlasfreelanceapp.com/verify-email?token=xxx}
+
+\section{Page 7: Inscription Client}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/signup/client}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Formulaire Multi-étape (2 étapes)}
+
+\subsubsection{Étape 1: Informations de Base}
+\begin{itemize}
+  \item Email
+  \item Mot de passe + confirmation
+  \item Checkbox CGU
+  \item Bouton: ``Continuer''
+\end{itemize}
+
+\subsubsection{Étape 2: Profil Entreprise}
+\begin{itemize}
+  \item Nom entreprise
+  \item Logo entreprise (upload)
+  \item Description courte (max 300 caractères)
+  \item Secteur d'activité (dropdown)
+  \item Site web (optionnel)
+  \item Pays + Ville
+  \item Bouton: ``Finaliser''
+\end{itemize}
+
+\section{Page 8: Connexion}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/login}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Contenu}
+
+\subsubsection{Formulaire Simple}
+\begin{itemize}
+  \item Email
+  \item Mot de passe
+  \item Checkbox: ``Se souvenir de moi''
+  \item Bouton: ``Connexion''
+\end{itemize}
+
+\subsubsection{Liens Navigation}
+\begin{itemize}
+  \item ``Mot de passe oublié?'' $\rightarrow$ \texttt{/forgot-password}
+  \item ``Pas encore inscrit? S'inscrire'' $\rightarrow$ \texttt{/signup}
+\end{itemize}
+
+\subsubsection{Options Sociales (Phase 2)}
+\begin{quote}
+  Ou continuez avec...
+\end{quote}
+\begin{itemize}
+  \item Bouton Google Sign-In
+  \item Bouton LinkedIn
+  \item Bouton GitHub (pour développeurs)
+\end{itemize}
+
+\section{Page 9: Mot de Passe Oublié}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/forgot-password}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Contenu}
+
+\subsubsection{Étape 1: Demande Email}
+\begin{itemize}
+  \item Titre: ``Réinitialiser votre mot de passe''
+  \item Champ email
+  \item Bouton: ``Envoyer lien de reset''
+  \item Message: ``Consultez votre email pour les instructions''
+\end{itemize}
+
+\subsubsection{Étape 2: Réinitialisation (dans email)}
+Lien token dans email: \url{https://app.atlasfreelanceapp.com/reset-password?token=xxx}
+
+Formulaire à la page:
+\begin{itemize}
+  \item Nouveau mot de passe
+  \item Confirmer mot de passe
+  \item Bouton: ``Réinitialiser''
+  \item Message succès $\rightarrow$ redirige \texttt{/login}
+\end{itemize}
+
+\section{Page 10: Vérification Email}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/verify-email?token=xxx}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Contenu}
+
+\subsubsection{Pendant le Chargement}
+\begin{quote}
+  Spinner + message ``Vérification de votre email...''
+\end{quote}
+
+\subsubsection{Si Succès}
+\begin{itemize}
+  \item Checkmark vert
+  \item Message: ``Email vérifié avec succès!''
+  \item Bouton: ``Accéder à mon dashboard'' $\rightarrow$ \texttt{/dashboard}
+\end{itemize}
+
+\subsubsection{Si Erreur}
+\begin{itemize}
+  \item Icon erreur rouge
+  \item Message: ``Ce lien a expiré ou est invalide''
+  \item Bouton: ``Envoyer à nouveau'' $\rightarrow$ formulaire email
+\end{itemize}
+
+\newpage
+
+\chapter{Pages Freelancer}
+
+\section{Page 11: Dashboard Freelancer}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer}
+  \item \textbf{Accès:} Authentifié (Freelancer uniquement)
+\end{itemize}
+
+\subsection{En-tête Personnalisé}
+\begin{itemize}
+  \item ``Bienvenue, [Prénom]!''
+  \item Heure et date
+  \item Notification icône (cloche) + nombre non lus
+\end{itemize}
+
+\subsection{Widgets (Layout Kanban Responsive)}
+
+\subsubsection{Widget 1: Solde \& Gains}
+\begin{itemize}
+  \item Solde actuel: ``1 234,50 MAD''
+  \item Gains ce mois: ``+500 MAD''
+  \item Bouton: ``Retirer des fonds''
+  \item Sparkline graphique (7 jours)
+\end{itemize}
+
+\subsubsection{Widget 2: Projets Actifs}
+\begin{itemize}
+  \item Nombre: ``3 projets en cours''
+  \item Liste mini:
+  \begin{itemize}
+    \item [Projet 1] -- 60\% complet -- Jalon: ``Validation UI''
+    \item [Projet 2] -- 30\% complet -- Jalon: ``Setup initial''
+    \item [Projet 3] -- En révision
+  \end{itemize}
+  \item Lien: ``Voir tous''
+\end{itemize}
+
+\subsubsection{Widget 3: Nouvelles Candidatures Possibles}
+\begin{itemize}
+  \item Nombre: ``5 projets correspondent à ton profil''
+  \item Mini cartes 2 projets:
+  \begin{itemize}
+    \item Titre, budget, compétence requise
+    \item Bouton: ``Postuler''
+  \end{itemize}
+\end{itemize}
+
+\subsubsection{Widget 4: Projets Sauvegardés}
+\begin{itemize}
+  \item Nombre: ``8 favoris''
+  \item Lien: ``Gérer favoris''
+\end{itemize}
+
+\subsubsection{Widget 5: Évaluations Récentes}
+\begin{itemize}
+  \item Dernière éval: ``★★★★★ de [Client]''
+  \item Citation: ``Excellent travail et réactif!''
+  \item Note moyenne globale: ``4.8/5 (24 avis)''
+\end{itemize}
+
+\subsubsection{Widget 6: Messages Non Lus}
+\begin{itemize}
+  \item Nombre: ``3 nouveaux messages''
+  \item Dernier message: ``[Client] -- Bonjour, ...'' (preview)
+  \item Bouton: ``Voir tous''
+\end{itemize}
+
+\subsubsection{Widget 7: Statistiques de Performance}
+\begin{itemize}
+  \item Taux de réponse: 95\%
+  \item Taux d'acceptation: 87\%
+  \item Projets complétés: 12
+  \item Mini graphique barres (mois)
+\end{itemize}
+
+\newpage
+
+\section{Page 12: Recherche \& Parcourir les Projets}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/projects}
+  \item \textbf{Accès:} Authentifié (Freelancer)
+\end{itemize}
+
+\subsection{Barre de Recherche \& Filtres (Sticky)}
+
+\subsubsection{Champ Texte}
+``Rechercher par titre, catégorie...''
+
+\subsubsection{Filtres Déroulants}
+\begin{itemize}
+  \item \textbf{Catégorie}: Développement, Design, Marketing, Écriture, etc.
+  \item \textbf{Budget}: Slider min/max (0--100,000 MAD)
+  \item \textbf{Durée}: Checkbox ``Court terme'' / ``Moyen'' / ``Long terme''
+  \item \textbf{Niveau requis}: Débutant / Intermédiaire / Avancé / Expert
+  \item \textbf{Langue}: Français / Arabe / Anglais
+  \item \textbf{Pays}: Maroc, France, Belgique, etc.
+  \item \textbf{Statut}: Actif / Fermé / En révision
+\end{itemize}
+
+\subsubsection{Boutons}
+\begin{itemize}
+  \item ``Appliquer filtres''
+  \item ``Réinitialiser''
+\end{itemize}
+
+\subsection{Tri (Dropdown)}
+\begin{itemize}
+  \item Plus récents
+  \item Budget élevé
+  \item Deadline proche
+  \item Plus populaires (candidats)
+\end{itemize}
+
+\subsection{Résultats (Liste ou Grille)}
+
+\subsubsection{Par Ligne}
+\begin{itemize}
+  \item [Icône catégorie] \textbf{Titre du projet} (max 100 caractères)
+  \item Description preview (100 caractères + ``...'')
+  \item Tags: compétences requises
+  \item Budget: ``500 -- 2000 MAD''
+  \item Durée: ``2 semaines''
+  \item Candidatures: ``12 candidats''
+  \item Client rating: ⭐ 4.7/5 (32 avis)
+  \item Temps restant: ``2j 5h''
+  \item Boutons: ``Voir détails'' | ❤️ ``Ajouter favoris''
+\end{itemize}
+
+\subsection{Pagination}
+Boutons: ``< Page précédente'' | ``1 2 3 ... 10'' | ``Page suivante >''
+
+\section{Page 13: Détails d'un Projet}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/projects/:id}
+  \item \textbf{Accès:} Authentifié (Freelancer)
+\end{itemize}
+
+\subsection{En-tête}
+\begin{itemize}
+  \item Titre du projet
+  \item Badge: ``Actif'' / ``Fermé'' / ``Accepté'' / ``Terminé''
+  \item Icône favori + Partager
+\end{itemize}
+
+\subsection{Section Gauche (70\% width sur desktop)}
+
+\subsubsection{Infos Générales}
+\begin{itemize}
+  \item Catégorie + sous-catégories
+  \item Description complète (peut être très long)
+  \item Compétences requises: tags cliquables
+  \item Fichiers joints: liste téléchargeables
+\end{itemize}
+
+\subsubsection{Jalons (si créés)}
+Timeline ou liste:
+\begin{itemize}
+  \item Jalon 1: ``Design'' -- 500 MAD -- Deadline: 15/01/2025
+  \item Jalon 2: ``Développement'' -- 1500 MAD -- Deadline: 30/01/2025
+\end{itemize}
+
+\subsubsection{Budget \& Durée}
+\begin{itemize}
+  \item Type: Fixe / Horaire / Fourchette
+  \item Montant: ``500 -- 2000 MAD'' ou ``100 MAD/h''
+  \item Durée estimée: ``2 semaines''
+  \item Niveau requis: ``Avancé''
+\end{itemize}
+
+\subsection{Section Droite (30\% width)}
+
+\subsubsection{Infos Client}
+\begin{itemize}
+  \item Avatar client
+  \item Nom client + badge (ex: ``Vérifié'', ``Nouveau'')
+  \item Note: ⭐ 4.7/5 (32 avis)
+  \item Nombre projets publiés: ``8 projets''
+  \item Taux de complétion: ``100\%''
+  \item Lien: ``Voir profil client''
+\end{itemize}
+
+\subsubsection{Boutons d'Action}
+\begin{enumerate}
+  \item \textbf{Bouton ``Postuler''} (primaire, grand)
+  \item \textbf{Bouton ``Ajouter à mes favoris''} (secondaire)
+  \item Bouton ``Partager''
+\end{enumerate}
+
+\subsubsection{Nombre de Candidatures}
+``12 candidats ont postulé''
+
+\newpage
+
+\section{Page 14: Postuler à un Projet}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/projects/:id/apply}
+  \item \textbf{Accès:} Authentifié (Freelancer), modal ou page pleine
+\end{itemize}
+
+\subsection{Formulaire de Candidature}
+
+\subsubsection{Sélection du Profil (si applicable)}
+Radio buttons: ``Développeur'' / ``Designer''
+
+\subsubsection{Montant Proposé}
+\begin{itemize}
+  \item Label: ``Combien demandez-vous?''
+  \item Champ montant (en MAD)
+  \item Suggestion: ``Budget recommandé: 1000 MAD''
+\end{itemize}
+
+\subsubsection{Durée Estimée}
+\begin{itemize}
+  \item Dropdown: ``1 semaine'' / ``2 semaines'' / ``1 mois'' / ``Personnalisé''
+  \item Si personnalisé: champ nombre jours
+\end{itemize}
+
+\subsubsection{Message de Couverture (Optionnel)}
+\begin{itemize}
+  \item Textarea: ``Dites au client pourquoi vous êtes le meilleur choix...'' (max 500 caractères)
+  \item Compteur caractères
+  \item Suggestions templates
+\end{itemize}
+
+\subsubsection{Fichiers du Portfolio (Optionnel)}
+\begin{itemize}
+  \item Checkbox: ``Attacher mon portfolio''
+  \item Liste projets précédents similaires à sélectionner
+\end{itemize}
+
+\subsubsection{Méthodologie Proposée (Optionnel)}
+Textarea: ``Votre approche, processus, livrables...''
+
+\subsubsection{Calendrier de Livraison (Optionnel)}
+Dates des jalons proposés.
+
+\subsection{Boutons}
+\begin{itemize}
+  \item Bouton ``Soumettre candidature'' (primaire)
+  \item Bouton ``Annuler''
+\end{itemize}
+
+\subsection{Pop-up de Confirmation}
+\begin{quote}
+  Candidature soumise! ✓\\
+  Vous avez postulé à [Titre projet]. Attendez la réponse du client.
+\end{quote}
+Bouton: ``Voir mes candidatures''
+
+\newpage
+
+\section{Page 15: Mes Candidatures}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer/applications}
+  \item \textbf{Accès:} Authentifié (Freelancer)
+\end{itemize}
+
+\subsection{Onglets (Tabs)}
+\begin{itemize}
+  \item \textbf{Toutes} (nombre)
+  \item \textbf{En attente} (nombre)
+  \item \textbf{Acceptées} (nombre)
+  \item \textbf{Refusées} (nombre)
+\end{itemize}
+
+\subsection{Tableau/Grille}
+
+\subsubsection{Par Ligne}
+\begin{itemize}
+  \item [Statut icône] \textbf{Titre projet}
+  \item Client: nom + avatar mini
+  \item Montant proposé: ``500 MAD''
+  \item Statut: ``En attente'' / ``Acceptée'' / ``Refusée''
+  \item Date candidature: ``15 déc 2025''
+  \item Actions: ``Voir détails'' | ``Annuler'' (si en attente)
+\end{itemize}
+
+\subsection{Tri}
+Plus récents / Plus anciens / Statut
+
+\newpage
+
+\section{Pages Additionnelles Freelancer}
+
+\subsection{Page 16: Profil Freelancer (Édition)}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer/profile}
+  \item Onglets: Informations personnelles, Compétences, Portfolio, Certificats, Préférences
+\end{itemize}
+
+\subsection{Page 17: Mes Projets en Cours}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer/projects-active}
+  \item Liste projets avec statut, jalons, deadlines
+\end{itemize}
+
+\subsection{Page 18: Espace de Travail Partagé}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/projects/:id/workspace}
+  \item Onglets: Chat, Fichiers, Jalons, Révisions, Support
+\end{itemize}
+
+\subsection{Page 19: Gestion Revenus \& Portefeuille}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer/wallet}
+  \item Vue solde, gains, transactions, graphiques
+\end{itemize}
+
+\subsection{Page 20: Retrait de Fonds}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer/wallet/withdraw}
+  \item Formulaire multi-étape (montant, méthode, confirmation)
+\end{itemize}
+
+\subsection{Page 21: Mes Avis \& Notes}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/freelancer/reviews}
+  \item Note globale, distribution, liste avis, filtres
+\end{itemize}
+
+\newpage
+
+\chapter{Pages Client}
+
+\section{Page 22: Dashboard Client}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client}
+  \item \textbf{Accès:} Authentifié (Client uniquement)
+\end{itemize}
+
+\subsection{En-tête}
+``Bienvenue, [Nom Entreprise]!''
+
+\subsection{Widgets Principaux}
+\begin{enumerate}
+  \item Projets Actifs
+  \item Candidatures en attente
+  \item Équipe habituelle
+  \item Budget consommé (avec barres de progression)
+  \item Nouveaux avis reçus
+  \item Messages non lus
+  \item Statistiques (projets complétés, freelancers préférés, temps moyen réponse)
+\end{enumerate}
+
+\section{Page 23: Créer un Nouveau Projet}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client/projects/create}
+  \item \textbf{Accès:} Authentifié (Client)
+\end{itemize}
+
+\subsection{Formulaire Multi-section}
+
+\subsubsection{Section 1: Infos de Base}
+\begin{itemize}
+  \item Titre du projet (max 120 caractères, compteur)
+  \item Description détaillée (min 100, max 2000 caractères)
+\end{itemize}
+
+\subsubsection{Section 2: Catégorie \& Compétences}
+\begin{itemize}
+  \item Catégorie principale (radio buttons)
+  \item Sous-catégories (multi-select, min 1, max 5)
+  \item Compétences requises (tags input)
+\end{itemize}
+
+\subsubsection{Section 3: Budget \& Durée}
+\begin{itemize}
+  \item Type de budget (Fixe / Horaire / Fourchette)
+  \item Montant
+  \item Durée estimée (radio buttons)
+  \item Niveau d'expérience requis
+\end{itemize}
+
+\subsubsection{Section 4: Fichiers \& Détails}
+\begin{itemize}
+  \item Pièces jointes (drag \& drop, max 10 fichiers, 50 MB/fichier)
+  \item Visibilité (Public / Privé)
+  \item Jalons (optionnel, collapse/expand)
+\end{itemize}
+
+\subsubsection{Section 5: Revue \& Publication}
+\begin{itemize}
+  \item Récapitulatif du projet
+  \item Checkbox: ``J'accepte les CGU''
+  \item Boutons: ``Brouillon'' | ``Publier''
+\end{itemize}
+
+\section{Pages Additionnelles Client}
+
+\subsection{Page 24: Mes Projets (Client)}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client/projects}
+  \item Onglets: Tous, Actifs, Terminés, Brouillons
+\end{itemize}
+
+\subsection{Page 25: Détail Projet (Vue Client)}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client/projects/:id}
+  \item Sections: Infos, Candidatures, Freelancer sélectionné, Contrat, Jalons
+\end{itemize}
+
+\subsection{Page 26: Candidatures Reçues}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client/projects/:id/applications}
+  \item Liste candidats avec filtres et actions
+\end{itemize}
+
+\subsection{Page 27: Gérer Équipe Habituelle}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client/team}
+  \item Grille freelancers avec stats et actions
+\end{itemize}
+
+\subsection{Page 28: Budget Tracking}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/dashboard/client/budget}
+  \item Vue rapide, graphiques, tableau détail, export
+\end{itemize}
+
+\newpage
+
+\chapter{Pages Communes}
+
+\section{Page 29: Messagerie Interne}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/messages}
+  \item \textbf{Accès:} Authentifié (Client ou Freelancer)
+\end{itemize}
+
+\subsection{Layout}
+\begin{itemize}
+  \item \textbf{Panneau gauche (30\%):} Liste conversations
+  \item \textbf{Panneau droit (70\%):} Chat actif
+\end{itemize}
+
+\subsection{Panneau Gauche}
+\begin{itemize}
+  \item Barre recherche: ``Chercher une conversation...''
+  \item Liste conversations:
+  \begin{itemize}
+    \item [Avatar] \textbf{Nom personne} | Date dernier message
+    \item Preview message: ``Bonjour, peux-tu...'' | Heure
+    \item Badge non lus: numéro (ex: ``2'')
+    \item Statut en ligne: point vert/gris
+  \end{itemize}
+  \item Tri/Filtres: ``Toutes'' / ``Non lues'' / ``Épinglées''
+\end{itemize}
+
+\subsection{Panneau Droit}
+\begin{itemize}
+  \item En-tête: Avatar, nom personne, statut, boutons
+  \item Messages: Bulles chat alternées avec timestamps
+  \item Champ d'entrée: Textarea + bouton envoyer + icônes fichier/emoji
+\end{itemize}
+
+\section{Page 30: Notifications}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/notifications}
+  \item \textbf{Accès:} Authentifié
+\end{itemize}
+
+\subsection{Onglets/Filtres}
+Toutes, Non lues, Projets, Candidatures, Paiements, Messages, Avis
+
+\subsection{Contenu}
+\begin{itemize}
+  \item Tri: Plus récentes
+  \item Par notification: Icône, titre, temps, status lu, boutons
+  \item Bouton: ``Marquer tous comme lus''
+\end{itemize}
+
+\section{Page 31: Paramètres de Notification}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/settings/notifications}
+  \item \textbf{Accès:} Authentifié
+\end{itemize}
+
+\subsection{Sections}
+\begin{itemize}
+  \item Notifications Email
+  \item Push Notifications (Mobile)
+  \item Notifications In-App
+  \item Fréquence emails
+  \item Bouton: ``Sauvegarder''
+\end{itemize}
+
+\section{Page 32: Système d'Évaluation \& Avis}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/projects/:id/review}
+  \item \textbf{Accès:} Authentifié, après clôture projet
+\end{itemize}
+
+\subsection{Formulaire d'Évaluation}
+\begin{itemize}
+  \item Titre: ``Évaluer cette collaboration''
+  \item Notes étoiles (5 critères): Qualité, Délais, Communication, Professionnalisme, Confiance
+  \item Moyenne globale (auto-calculée)
+  \item Commentaire (textarea, max 500 caractères)
+  \item Tags positifs/négatifs (checkboxes optionnel)
+  \item Boutons: ``Soumettre avis'' | ``Annuler''
+\end{itemize}
+
+\section{Page 33: Profil Public}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/freelancers/:id}
+  \item \textbf{Accès:} Public
+\end{itemize}
+
+\subsection{Contenu}
+\begin{itemize}
+  \item En-tête: Avatar (grande), nom, badge, titre, localisation, note, statut
+  \item Bouton: ``Contacter'' ou ``S'inscrire pour contacter''
+  \item Section Gauche: Bio, Langues, Compétences, Portfolio, Certificats, Avis
+  \item Section Droite: Tarification, Liens externes, Bouton ``Contacter'' (sticky)
+\end{itemize}
+
+\newpage
+
+\chapter{Pages Administrateur}
+
+\section{Page 34: Dashboard Administrateur}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/dashboard}
+  \item \textbf{Accès:} Authentifié (Admin uniquement), rôle ``admin''
+\end{itemize}
+
+\subsection{Widgets Principaux}
+\begin{enumerate}
+  \item Santé plateforme (Uptime, MAU, Transactions, Erreurs)
+  \item Utilisateurs (Total, Freelancers, Clients, Nouveaux, Tendance)
+  \item Projets (Total, Actifs, Complétés, Volume montant)
+  \item Transactions \& Revenus (Volume, Commissions, Moyen par transaction)
+  \item Signalements \& Litiges (Plaintes, Litiges, Signalements, Fraudes)
+  \item Activité Récente (Liste 5 derniers événements)
+\end{enumerate}
+
+\subsection{Graphiques (Optionnel)}
+\begin{itemize}
+  \item Ligne: Utilisateurs cumulatifs vs actifs
+  \item Barres: Revenus par mois
+  \item Pie: Répartition projets par catégorie
+\end{itemize}
+
+\section{Page 35: Gestion des Utilisateurs (Admin)}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/users}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Filtres \& Recherche}
+\begin{itemize}
+  \item Champ recherche: ``Nom, email, ID utilisateur...''
+  \item Filtres: Type (Freelancer/Client), Status, Date inscription
+\end{itemize}
+
+\subsection{Tableau Utilisateurs}
+Colonnes: Avatar, Nom, Email, Type, Status, Inscription, Actions
+
+\subsection{Actions par Utilisateur}
+\begin{itemize}
+  \item Voir profil
+  \item Éditer
+  \item Vérifier
+  \item Suspendre/Débloquer
+  \item Bloquer définitivement
+  \item Voir historique
+  \item Envoyer message
+\end{itemize}
+
+\section{Page 36: Modération des Projets}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/projects}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Onglets}
+\begin{itemize}
+  \item En attente d'approbation
+  \item Approuvés
+  \item Signalés
+  \item Fermés/Archivés
+\end{itemize}
+
+\subsection{Actions}
+\begin{itemize}
+  \item Approuver (publier)
+  \item Rejeter (avec raison)
+  \item Bloquer (masquer)
+\end{itemize}
+
+\section{Page 37: Gestion des Litiges}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/disputes}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Onglets}
+En cours, Résolus, Archivés
+
+\subsection{Détail Litige}
+\begin{itemize}
+  \item Parties (profils Client + Freelancer)
+  \item Projet (titre, budget, contrat)
+  \item Raison (description)
+  \item Messages (historique chat)
+  \item Preuves (fichiers, captures)
+  \item Historique actions
+\end{itemize}
+
+\subsection{Actions du Support}
+\begin{itemize}
+  \item Textarea: ``Décision''
+  \begin{itemize}
+    \item Rejet complet
+    \item Remboursement partiel
+    \item Paiement au freelancer
+    \item Médiation manuelle
+  \end{itemize}
+  \item Checkbox: ``Sanction pour utilisateur''
+  \item Bouton: ``Appliquer décision''
+\end{itemize}
+
+\section{Page 38: Signalements}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/reports}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Onglets}
+Signalés, En examen, Fermés
+
+\subsection{Actions}
+\begin{itemize}
+  \item Rejeter (non fondé)
+  \item Avertir
+  \item Suspendre
+  \item Bloquer
+  \item Supprimer contenu
+  \item Modérer (rediger)
+\end{itemize}
+
+\section{Page 39: Configuration Système}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/settings}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Onglets}
+\begin{enumerate}
+  \item \textbf{Plateforme}: Nom, logo, slogan, langues, devises, maintenance
+  \item \textbf{Paiements}: Commission, frais, limites budgets, configuration Stripe
+  \item \textbf{Emails}: Templates, paramètres email
+  \item \textbf{Sécurité}: 2FA, durée session, chiffrement, audit, logs
+\end{enumerate}
+
+\section{Page 40: Analytics \& Rapports (Admin)}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/analytics}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Dashboards}
+\begin{itemize}
+  \item Dashboard 1: Utilisateurs (croissance, conversion, rétention, churn)
+  \item Dashboard 2: Projets \& Transactions (nombre, volume, catégories)
+  \item Dashboard 3: Revenus (commission/mois, frais, profit)
+  \item Dashboard 4: Support \& Litiges (nombre, durée, satisfaction)
+\end{itemize}
+
+\subsection{Exports}
+\begin{itemize}
+  \item ``Exporter rapport (PDF)''
+  \item ``Exporter données (CSV/Excel)''
+\end{itemize}
+
+\section{Page 41: Logs \& Audit (Admin)}
+
+\subsection{Informations Générales}
+\begin{itemize}
+  \item \textbf{URL:} \texttt{/admin/logs}
+  \item \textbf{Accès:} Authentifié (Admin)
+\end{itemize}
+
+\subsection{Filtres}
+Période, Type d'événement
+
+\subsection{Tableau Logs}
+Colonnes: Timestamp, Utilisateur Admin, Action, Ressource, Status, Détails
+
+\subsection{Export}
+``Télécharger PDF'' / ``Télécharger CSV''
+
+\newpage
+
+\chapter{Structure d'Implémentation}
+
+\section{Architecture Fichiers Frontend (React)}
+
+\begin{lstlisting}
+src/
+├── pages/
+│   ├── public/
+│   │   ├── Landing.jsx
+│   │   ├── HowItWorks.jsx
+│   │   ├── About.jsx
+│   │   ├── Pricing.jsx
+│   ├── auth/
+│   │   ├── SignupRole.jsx
+│   │   ├── SignupFreelancer.jsx
+│   │   ├── SignupClient.jsx
+│   │   ├── Login.jsx
+│   │   ├── ForgotPassword.jsx
+│   │   ├── VerifyEmail.jsx
+│   ├── freelancer/
+│   │   ├── Dashboard.jsx
+│   │   ├── Projects.jsx
+│   │   ├── ProjectDetail.jsx
+│   │   ├── Apply.jsx
+│   │   ├── Applications.jsx
+│   │   ├── Profile.jsx
+│   │   ├── ProjectsActive.jsx
+│   │   ├── Workspace.jsx
+│   │   ├── Wallet.jsx
+│   │   ├── Withdraw.jsx
+│   │   ├── Reviews.jsx
+│   ├── client/
+│   │   ├── Dashboard.jsx
+│   │   ├── CreateProject.jsx
+│   │   ├── MyProjects.jsx
+│   │   ├── ProjectDetail.jsx
+│   │   ├── Applications.jsx
+│   │   ├── Team.jsx
+│   │   ├── BudgetTracking.jsx
+│   ├── shared/
+│   │   ├── Messages.jsx
+│   │   ├── Notifications.jsx
+│   │   ├── NotificationSettings.jsx
+│   │   ├── Review.jsx
+│   │   ├── PublicProfile.jsx
+│   ├── admin/
+│   │   ├── Dashboard.jsx
+│   │   ├── Users.jsx
+│   │   ├── Projects.jsx
+│   │   ├── Disputes.jsx
+│   │   ├── Reports.jsx
+│   │   ├── Settings.jsx
+│   │   ├── Analytics.jsx
+│   │   ├── Logs.jsx
+\end{lstlisting}
+
+\newpage
+
+\chapter{Conclusion}
+
+Ce document détaille \textbf{42 pages/écrans principaux} d'une plateforme complète de freelancing comme AtlasFreelanceApp. Chaque page inclut:
+
+\begin{itemize}
+  \item \textbf{URL de route}
+  \item \textbf{Conditions d'accès} (authentification, rôles)
+  \item \textbf{Éléments visuels}: layouts, sections, widgets
+  \item \textbf{Contenu}: champs de formulaire, textes, données affichées
+  \item \textbf{Interactions}: boutons, modals, redirections
+\end{itemize}
+
+\section{Utilisation du Document}
+
+Ce guide peut être utilisé pour:
+
+\begin{itemize}
+  \item \textbf{Designer} les maquettes (Figma, Adobe XD)
+  \item \textbf{Développer} avec cette arborescence claire
+  \item \textbf{Spécifier} les APIs nécessaires
+  \item \textbf{Tester} toutes les user journeys
+  \item \textbf{Documenter} les exigences fonctionnelles
+\end{itemize}
+
+\section{Prochaines Étapes}
+
+\begin{enumerate}
+  \item Créer les maquettes visuelles (Figma/Adobe XD)
+  \item Définir les API endpoints et schemas (OpenAPI/Swagger)
+  \item Mettre en place l'infrastructure cloud (AWS)
+  \item Développer le backend (Node.js/Express)
+  \item Développer le frontend web (React)
+  \item Développer l'app mobile (React Native)
+  \item Tests et assurance qualité (QA)
+  \item Déploiement et monitoring
+\end{enumerate}
+
+\appendix
+
+\chapter{Tableaux de Référence}
+
+\section{Types d'Utilisateurs}
+
+\begin{table}[h]
+  \centering
+  \begin{tabularx}{\textwidth}{|l|X|X|}
+    \hline
+    \tablehead{Type} & \tablehead{Description} & \tablehead{Rôles Principaux} \\
+    \hline
+    Freelancer & Professionnel indépendant offrant des services & Postuler, Créer profil, Recevoir paiements \\
+    \hline
+    Client & Entreprise/particulier cherchant talents & Publier projets, Sélectionner, Payer \\
+    \hline
+    Administrateur & Équipe AtlasFreelanceApp & Modérer, Résoudre litiges, Analyser \\
+    \hline
+  \end{tabularx}
+  \caption{Types d'utilisateurs et rôles}
+\end{table}
+
+\section{Catégories de Projets}
+
+\begin{itemize}
+  \item Développement Web et Mobile
+  \item Design Graphique et Illustration
+  \item Marketing Digital
+  \item Rédaction et Traduction
+  \item Gestion de Projet
+  \item Consultation
+  \item Support Client
+  \item Autres Services
+\end{itemize}
+
+\section{Statuts de Projets}
+
+\begin{table}[h]
+  \centering
+  \begin{tabularx}{\textwidth}{|l|X|}
+    \hline
+    \tablehead{Statut} & \tablehead{Description} \\
+    \hline
+    Brouillon & Créé mais non publié & \\
+    \hline
+    Actif & Publié et recevant candidatures \\
+    \hline
+    En cours & Freelancer sélectionné et travail commencé \\
+    \hline
+    En révision & Travail soumis pour validation \\
+    \hline
+    Complété & Travail validé et payé \\
+    \hline
+    Fermé & Projet terminé ou annulé \\
+    \hline
+  \end{tabularx}
+  \caption{Statuts possibles des projets}
+\end{table}
+
+\end{document}

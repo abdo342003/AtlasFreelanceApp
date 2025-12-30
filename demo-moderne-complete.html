@@ -1,0 +1,2206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AtlasFreelanceApp - Démo Complète</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== TOKENS (Design System) ========== */
+        :root {
+            --color-primary: #0EA5E9;
+            --color-on-primary: #FFFFFF;
+            --color-secondary: #22C55E;
+            --color-on-secondary: #FFFFFF;
+            --color-accent: #F59E0B;
+            --color-bg: #F8FAFC;
+            --color-surface: #FFFFFF;
+            --color-text-primary: #0F172A;
+            --color-text-secondary: #475569;
+            --color-border: #E2E8F0;
+            --color-success: #22C55E;
+            --color-warning: #F59E0B;
+            --color-danger: #EF4444;
+            --color-info: #3B82F6;
+            
+            --space-xs: 4px;
+            --space-s: 8px;
+            --space-m: 12px;
+            --space-l: 16px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            
+            --title-size: 32px;
+            --title-weight: 700;
+            --subtitle-size: 18px;
+            --subtitle-weight: 600;
+            --body-size: 16px;
+            --body-weight: 400;
+            --caption-size: 13px;
+            --caption-weight: 400;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+            
+            --transition: 0.2s ease;
+        }
+
+        /* Mode sombre */
+        .theme-dark {
+            --color-primary: #38BDF8;
+            --color-on-primary: #0B1020;
+            --color-secondary: #22C55E;
+            --color-on-secondary: #0B1020;
+            --color-accent: #F59E0B;
+            --color-bg: #0F172A;
+            --color-surface: #1E293B;
+            --color-text-primary: #F8FAFC;
+            --color-text-secondary: #CBD5E1;
+            --color-border: #334155;
+            --shadow-card: 0 4px 12px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        /* ========== BASE STYLES ========== */
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            transition: background var(--transition);
+        }
+
+        /* ========== PHONE FRAME ========== */
+        .phone-frame {
+            width: 100%;
+            max-width: 420px;
+            height: 90vh;
+            max-height: 900px;
+            background: var(--color-bg);
+            border-radius: 40px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            overflow: hidden;
+            position: relative;
+            border: 12px solid #1F2937;
+            transition: all var(--transition);
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 30px;
+            background: #1F2937;
+            border-radius: 0 0 20px 20px;
+            z-index: 1000;
+        }
+
+        /* ========== STATUS BAR ========== */
+        .status-bar {
+            height: 44px;
+            background: var(--color-primary);
+            color: var(--color-on-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-l);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ========== APP CONTAINER ========== */
+        .app-container {
+            height: calc(100% - 44px);
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg);
+            overflow: hidden;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: var(--color-primary);
+            color: var(--color-on-primary);
+            padding: var(--space-l);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 60px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--space-s);
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.15);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            color: var(--color-on-primary);
+            transition: all var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ========== CONTENT ========== */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-l);
+            padding-bottom: 80px;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-l);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== CARDS ========== */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            padding: var(--space-xl);
+            transition: all var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: var(--subtitle-size);
+            font-weight: var(--subtitle-weight);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-m);
+        }
+
+        .card-subtitle {
+            font-size: var(--body-size);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-l);
+        }
+
+        .card-compact {
+            padding: var(--space-l);
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-m) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: var(--body-size);
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            text-decoration: none;
+            gap: var(--space-s);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-on-primary);
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-on-secondary);
+        }
+
+        .btn-secondary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--color-text-primary);
+            border: 2px solid var(--color-border);
+        }
+
+        .btn-outline:hover {
+            background: var(--color-border);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-small {
+            padding: var(--space-s) var(--space-l);
+            font-size: var(--caption-size);
+        }
+
+        /* ========== INPUTS ========== */
+        .input-group {
+            margin-bottom: var(--space-l);
+        }
+
+        .input-label {
+            display: block;
+            font-size: var(--caption-size);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-s);
+        }
+
+        .input {
+            width: 100%;
+            padding: var(--space-m) var(--space-l);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font-size: var(--body-size);
+            transition: all var(--transition);
+        }
+
+        .input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* ========== BADGES ========== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-m);
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            gap: var(--space-xs);
+        }
+
+        .badge-primary {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--color-primary);
+        }
+
+        .badge-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--color-success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--color-warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--color-danger);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--color-info);
+        }
+
+        /* ========== NAVIGATION ========== */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: var(--space-s);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: var(--color-text-secondary);
+            transition: all var(--transition);
+            font-size: 11px;
+            font-weight: 600;
+            padding: var(--space-s);
+            border-radius: var(--radius-sm);
+            min-width: 60px;
+        }
+
+        .nav-item:hover {
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .nav-item.active {
+            color: var(--color-primary);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: var(--space-xs);
+        }
+
+        /* ========== STATS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-m);
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(34, 197, 94, 0.1));
+            padding: var(--space-l);
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--color-border);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            margin-top: var(--space-xs);
+        }
+
+        /* ========== PROFILE ========== */
+        .profile-header {
+            text-align: center;
+            padding: var(--space-xl) 0;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 auto var(--space-m);
+            box-shadow: var(--shadow-card);
+        }
+
+        .avatar-small {
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .profile-title {
+            font-size: var(--caption-size);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-xs);
+        }
+
+        /* ========== RATING ========== */
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: var(--caption-size);
+        }
+
+        .stars {
+            color: var(--color-warning);
+        }
+
+        .rating-text {
+            color: var(--color-text-secondary);
+        }
+
+        /* ========== PROJECT CARD ========== */
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-m);
+        }
+
+        .project-budget {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-success);
+            margin: var(--space-m) 0;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: var(--space-l);
+            font-size: var(--caption-size);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-m);
+        }
+
+        .project-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        /* ========== FREELANCER LIST ========== */
+        .freelancer-item {
+            display: flex;
+            gap: var(--space-m);
+            padding: var(--space-l);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-m);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .freelancer-item:hover {
+            box-shadow: var(--shadow-card);
+            transform: translateX(4px);
+        }
+
+        .freelancer-info {
+            flex: 1;
+        }
+
+        .freelancer-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .freelancer-skills {
+            display: flex;
+            gap: var(--space-xs);
+            flex-wrap: wrap;
+            margin-top: var(--space-s);
+        }
+
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            gap: var(--space-s);
+            border-bottom: 2px solid var(--color-border);
+            margin-bottom: var(--space-l);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: var(--space-m) var(--space-l);
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--color-primary);
+        }
+
+        .tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* ========== MESSAGES ========== */
+        .message-item {
+            display: flex;
+            gap: var(--space-m);
+            padding: var(--space-l);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-m);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .message-item:hover {
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-xs);
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+        }
+
+        .message-preview {
+            font-size: var(--caption-size);
+            color: var(--color-text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-unread {
+            width: 8px;
+            height: 8px;
+            background: var(--color-primary);
+            border-radius: var(--radius-full);
+        }
+
+        /* ========== UTILITIES ========== */
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-m);
+        }
+
+        .row {
+            display: flex;
+            gap: var(--space-m);
+            align-items: center;
+        }
+
+        .space-between {
+            justify-content: space-between;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-l {
+            margin-top: var(--space-l);
+        }
+
+        .mb-l {
+            margin-bottom: var(--space-l);
+        }
+
+        .text-secondary {
+            color: var(--color-text-secondary);
+        }
+
+        .text-success {
+            color: var(--color-success);
+        }
+
+        .text-danger {
+            color: var(--color-danger);
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--color-text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-l);
+            opacity: 0.5;
+        }
+
+        /* ========== PROGRESS BAR ========== */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--color-border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: var(--space-m) 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+
+        /* ========== THEME TOGGLE ========== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition);
+            z-index: 10000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        /* ========== SCROLLBAR ========== */
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: var(--color-bg);
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: var(--color-border);
+            border-radius: var(--radius-full);
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+            }
+
+            .phone-frame {
+                max-width: 100%;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+
+            .phone-frame::before {
+                display: none;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+        }style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* ========== TOKENS (Design System) ========== */
+        :root {
+            --color-primary: #0EA5E9;
+            --color-on-primary: #FFFFFF;
+            --color-secondary: #22C55E;
+            --color-on-secondary: #FFFFFF;
+            --color-accent: #F59E0B;
+            --color-bg: #F8FAFC;
+            --color-surface: #FFFFFF;
+            --color-text-primary: #0F172A;
+            --color-text-secondary: #475569;
+            --color-border: #E2E8F0;
+            --color-success: #22C55E;
+            --color-warning: #F59E0B;
+            --color-danger: #EF4444;
+            --color-info: #3B82F6;
+            
+            --space-xs: 4px;
+            --space-s: 8px;
+            --space-m: 12px;
+            --space-l: 16px;
+            --space-xl: 24px;
+            --space-2xl: 32px;
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-full: 9999px;
+            
+            --title-size: 32px;
+            --title-weight: 700;
+            --subtitle-size: 18px;
+            --subtitle-weight: 600;
+            --body-size: 16px;
+            --body-weight: 400;
+            --caption-size: 13px;
+            --caption-weight: 400;
+            
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-card: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.12);
+            
+            --transition: 0.2s ease;
+        }
+
+        /* Mode sombre */
+        .theme-dark {
+            --color-primary: #38BDF8;
+            --color-on-primary: #0B1020;
+            --color-secondary: #22C55E;
+            --color-on-secondary: #0B1020;
+            --color-accent: #F59E0B;
+            --color-bg: #0F172A;
+            --color-surface: #1E293B;
+            --color-text-primary: #F8FAFC;
+            --color-text-secondary: #CBD5E1;
+            --color-border: #334155;
+            --shadow-card: 0 4px 12px rgba(0,0,0,0.3);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        /* ========== BASE STYLES ========== */
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-xl);
+            transition: background var(--transition);
+        }
+
+        /* ========== PHONE FRAME ========== */
+        .phone-frame {
+            width: 100%;
+            max-width: 420px;
+            height: 90vh;
+            max-height: 900px;
+            background: var(--color-bg);
+            border-radius: 40px;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            overflow: hidden;
+            position: relative;
+            border: 12px solid #1F2937;
+            transition: all var(--transition);
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 140px;
+            height: 30px;
+            background: #1F2937;
+            border-radius: 0 0 20px 20px;
+            z-index: 1000;
+        }
+
+        /* ========== STATUS BAR ========== */
+        .status-bar {
+            height: 44px;
+            background: var(--color-primary);
+            color: var(--color-on-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 var(--space-l);
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* ========== APP CONTAINER ========== */
+        .app-container {
+            height: calc(100% - 44px);
+            display: flex;
+            flex-direction: column;
+            background: var(--color-bg);
+            overflow: hidden;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background: var(--color-primary);
+            color: var(--color-on-primary);
+            padding: var(--space-l);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 60px;
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: var(--space-s);
+        }
+
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.15);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            color: var(--color-on-primary);
+            transition: all var(--transition);
+        }
+
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
+        .icon-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ========== CONTENT ========== */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: var(--space-l);
+            padding-bottom: 80px;
+        }
+
+        .screen {
+            display: none;
+            flex-direction: column;
+            gap: var(--space-l);
+            animation: fadeIn 0.3s ease;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== CARDS ========== */
+        .card {
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-card);
+            padding: var(--space-xl);
+            transition: all var(--transition);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .card-title {
+            font-size: var(--subtitle-size);
+            font-weight: var(--subtitle-weight);
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-m);
+        }
+
+        .card-subtitle {
+            font-size: var(--body-size);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-l);
+        }
+
+        .card-compact {
+            padding: var(--space-l);
+        }
+
+        /* ========== BUTTONS ========== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-m) var(--space-xl);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: var(--body-size);
+            cursor: pointer;
+            border: none;
+            transition: all var(--transition);
+            text-decoration: none;
+            gap: var(--space-s);
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-on-primary);
+        }
+
+        .btn-primary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-on-secondary);
+        }
+
+        .btn-secondary:hover {
+            filter: brightness(1.1);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--color-text-primary);
+            border: 2px solid var(--color-border);
+        }
+
+        .btn-outline:hover {
+            background: var(--color-border);
+        }
+
+        .btn-danger {
+            background: var(--color-danger);
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+        }
+
+        .btn-small {
+            padding: var(--space-s) var(--space-l);
+            font-size: var(--caption-size);
+        }
+
+        /* ========== INPUTS ========== */
+        .input-group {
+            margin-bottom: var(--space-l);
+        }
+
+        .input-label {
+            display: block;
+            font-size: var(--caption-size);
+            font-weight: 600;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--space-s);
+        }
+
+        .input {
+            width: 100%;
+            padding: var(--space-m) var(--space-l);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--color-border);
+            background: var(--color-surface);
+            color: var(--color-text-primary);
+            font-size: var(--body-size);
+            transition: all var(--transition);
+        }
+
+        .input::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.1);
+        }
+
+        .textarea {
+            min-height: 100px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* ========== BADGES ========== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: var(--space-xs) var(--space-m);
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            gap: var(--space-xs);
+        }
+
+        .badge-primary {
+            background: rgba(14, 165, 233, 0.1);
+            color: var(--color-primary);
+        }
+
+        .badge-success {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--color-success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--color-warning);
+        }
+
+        .badge-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--color-danger);
+        }
+
+        .badge-info {
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--color-info);
+        }
+
+        /* ========== NAVIGATION ========== */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: var(--space-s);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: var(--color-text-secondary);
+            transition: all var(--transition);
+            font-size: 11px;
+            font-weight: 600;
+            padding: var(--space-s);
+            border-radius: var(--radius-sm);
+            min-width: 60px;
+        }
+
+        .nav-item:hover {
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .nav-item.active {
+            color: var(--color-primary);
+        }
+
+        .nav-icon {
+            font-size: 22px;
+            margin-bottom: var(--space-xs);
+        }
+
+        /* ========== STATS ========== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--space-m);
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(34, 197, 94, 0.1));
+            padding: var(--space-l);
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--color-border);
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--color-primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+            margin-top: var(--space-xs);
+        }
+
+        /* ========== PROFILE ========== */
+        .profile-header {
+            text-align: center;
+            padding: var(--space-xl) 0;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-full);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 auto var(--space-m);
+            box-shadow: var(--shadow-card);
+        }
+
+        .avatar-small {
+            width: 48px;
+            height: 48px;
+            font-size: 18px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-text-primary);
+        }
+
+        .profile-title {
+            font-size: var(--caption-size);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-xs);
+        }
+
+        /* ========== RATING ========== */
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+            font-size: var(--caption-size);
+        }
+
+        .stars {
+            color: var(--color-warning);
+        }
+
+        .rating-text {
+            color: var(--color-text-secondary);
+        }
+
+        /* ========== PROJECT CARD ========== */
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: var(--space-m);
+        }
+
+        .project-budget {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--color-success);
+            margin: var(--space-m) 0;
+        }
+
+        .project-meta {
+            display: flex;
+            gap: var(--space-l);
+            font-size: var(--caption-size);
+            color: var(--color-text-secondary);
+            margin-top: var(--space-m);
+        }
+
+        .project-meta-item {
+            display: flex;
+            align-items: center;
+            gap: var(--space-xs);
+        }
+
+        /* ========== FREELANCER LIST ========== */
+        .freelancer-item {
+            display: flex;
+            gap: var(--space-m);
+            padding: var(--space-l);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-m);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .freelancer-item:hover {
+            box-shadow: var(--shadow-card);
+            transform: translateX(4px);
+        }
+
+        .freelancer-info {
+            flex: 1;
+        }
+
+        .freelancer-name {
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--space-xs);
+        }
+
+        .freelancer-skills {
+            display: flex;
+            gap: var(--space-xs);
+            flex-wrap: wrap;
+            margin-top: var(--space-s);
+        }
+
+        /* ========== TABS ========== */
+        .tabs {
+            display: flex;
+            gap: var(--space-s);
+            border-bottom: 2px solid var(--color-border);
+            margin-bottom: var(--space-l);
+            overflow-x: auto;
+        }
+
+        .tab {
+            padding: var(--space-m) var(--space-l);
+            background: transparent;
+            border: none;
+            color: var(--color-text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            color: var(--color-primary);
+        }
+
+        .tab.active {
+            color: var(--color-primary);
+            border-bottom-color: var(--color-primary);
+        }
+
+        /* ========== MESSAGES ========== */
+        .message-item {
+            display: flex;
+            gap: var(--space-m);
+            padding: var(--space-l);
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--space-m);
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .message-item:hover {
+            background: rgba(14, 165, 233, 0.05);
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: var(--space-xs);
+        }
+
+        .message-sender {
+            font-weight: 600;
+            color: var(--color-text-primary);
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--color-text-secondary);
+        }
+
+        .message-preview {
+            font-size: var(--caption-size);
+            color: var(--color-text-secondary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .message-unread {
+            width: 8px;
+            height: 8px;
+            background: var(--color-primary);
+            border-radius: var(--radius-full);
+        }
+
+        /* ========== UTILITIES ========== */
+        .stack {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-m);
+        }
+
+        .row {
+            display: flex;
+            gap: var(--space-m);
+            align-items: center;
+        }
+
+        .space-between {
+            justify-content: space-between;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-l {
+            margin-top: var(--space-l);
+        }
+
+        .mb-l {
+            margin-bottom: var(--space-l);
+        }
+
+        .text-secondary {
+            color: var(--color-text-secondary);
+        }
+
+        .text-success {
+            color: var(--color-success);
+        }
+
+        .text-danger {
+            color: var(--color-danger);
+        }
+
+        /* ========== EMPTY STATE ========== */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-2xl);
+            color: var(--color-text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 48px;
+            margin-bottom: var(--space-l);
+            opacity: 0.5;
+        }
+
+        /* ========== PROGRESS BAR ========== */
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: var(--color-border);
+            border-radius: var(--radius-full);
+            overflow: hidden;
+            margin: var(--space-m) 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            border-radius: var(--radius-full);
+            transition: width 0.3s ease;
+        }
+
+        /* ========== THEME TOGGLE ========== */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all var(--transition);
+            z-index: 10000;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1) rotate(20deg);
+        }
+
+        /* ========== SCROLLBAR ========== */
+        .content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content::-webkit-scrollbar-track {
+            background: var(--color-bg);
+        }
+
+        .content::-webkit-scrollbar-thumb {
+            background: var(--color-border);
+            border-radius: var(--radius-full);
+        }
+
+        .content::-webkit-scrollbar-thumb:hover {
+            background: var(--color-primary);
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 480px) {
+            body {
+                padding: 0;
+            }
+
+            .phone-frame {
+                max-width: 100%;
+                height: 100vh;
+                max-height: 100vh;
+                border-radius: 0;
+                border: none;
+            }
+
+            .phone-frame::before {
+                display: none;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <div class="theme-to
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span id="theme-icon">🌙</span>
+    </div>
+
+    <!-- Phone Frame -->
+    <div class="phone-frame">
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 🔋</span>
+        </div>
+
+        <!-- App Container -->
+        <div class="app-container">
+            <!-- Header -->
+            <div class="header">
+                <h1 class="header-title" id="header-title">AtlasFreelanceApp</h1>
+                <div class="header-actions">
+                    <button class="icon-btn" title="Notifications">🔔</button>
+                    <button class="icon-btn" title="Messages">💬</button>
+                </div>
+            </div>
+
+            <!-- Content -->
+            <div class="content">
+                <!-- ========== SCREEN: PUBLIC/LANDING ========== -->
+                <div class="screen active" id="screen-public">
+                    <div class="card">
+                        <h2 class="card-title">Bienvenue sur AtlasFreelanceApp 🚀</h2>
+                        <p class="card-subtitle">Connectez talents et projets. Trouvez des missions, collaborez, facturez en toute simplicité.</p>
+                        
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value">2.5K+</div>
+                                <div class="stat-label">Freelancers</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">1.2K+</div>
+                                <div class="stat-label">Projets</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">98%</div>
+                                <div class="stat-label">Satisfaction</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Comment ça marche ?</h3>
+                        <div class="stack">
+                            <div class="row">
+                                <span style="font-size: 24px;">1️⃣</span>
+                                <div>
+                                    <strong>Créez votre compte</strong>
+                                    <p class="text-secondary" style="font-size: 13px;">En tant que freelancer ou client</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span style="font-size: 24px;">2️⃣</span>
+                                <div>
+                                    <strong>Trouvez des opportunités</strong>
+                                    <p class="text-secondary" style="font-size: 13px;">Parcourez et candidatez aux projets</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <span style="font-size: 24px;">3️⃣</span>
+                                <div>
+                                    <strong>Collaborez et livrez</strong>
+                                    <p class="text-secondary" style="font-size: 13px;">Workspace intégré avec chat et fichiers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stack">
+                        <button class="btn btn-primary btn-full" onclick="showScreen('auth')">Créer un compte</button>
+                        <button class="btn btn-outline btn-full" onclick="showScreen('auth')">Se connecter</button>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: AUTH ========== -->
+                <div class="screen" id="screen-auth">
+                    <div class="card">
+                        <h2 class="card-title">Connexion</h2>
+                        <p class="card-subtitle">Accédez à votre espace</p>
+                        
+                        <form class="stack" onsubmit="login(event)">
+                            <div class="input-group">
+                                <label class="input-label">Email</label>
+                                <input type="email" class="input" placeholder="votre@email.com" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Mot de passe</label>
+                                <input type="password" class="input" placeholder="••••••••" required>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-full">Se connecter</button>
+                            <button type="button" class="btn btn-outline btn-full">Mot de passe oublié ?</button>
+                        </form>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Créer un compte</h3>
+                        <div class="stack">
+                            <button class="btn btn-secondary btn-full" onclick="alert('Inscription Freelancer')">
+                                Je suis Freelancer 💼
+                            </button>
+                            <button class="btn btn-secondary btn-full" onclick="alert('Inscription Client')">
+                                Je suis Client 🏢
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: FREELANCER DASHBOARD ========== -->
+                <div class="screen" id="screen-freelancer">
+                    <div class="profile-header">
+                        <div class="avatar">JD</div>
+                        <h3 class="profile-name">Jean Dupont</h3>
+                        <p class="profile-title">Développeur Full Stack</p>
+                        <div class="rating" style="justify-content: center; margin-top: 8px;">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-text">(4.9 - 42 avis)</span>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">28</div>
+                            <div class="stat-label">Projets</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">En cours</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">12.5K€</div>
+                            <div class="stat-label">Revenus</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="row space-between">
+                            <h3 class="card-title" style="margin: 0;">Projets disponibles</h3>
+                            <span class="badge badge-info">24 nouveaux</span>
+                        </div>
+                    </div>
+
+                    <!-- Project Card 1 -->
+                    <div class="card card-compact">
+                        <div class="project-header">
+                            <h4 class="card-title" style="margin: 0;">Application mobile e-commerce</h4>
+                            <span class="badge badge-success">Nouveau</span>
+                        </div>
+                        <p class="card-subtitle" style="margin-bottom: 8px;">Développement d'une app mobile cross-platform avec React Native pour un site e-commerce existant.</p>
+                        <div class="project-budget">3.500 € - 5.000 €</div>
+                        <div class="project-meta">
+                            <span class="project-meta-item">⏱️ 2-3 mois</span>
+                            <span class="project-meta-item">📍 Remote</span>
+                            <span class="project-meta-item">💼 Intermédiaire</span>
+                        </div>
+                        <div class="freelancer-skills" style="margin-top: 12px;">
+                            <span class="badge badge-primary">React Native</span>
+                            <span class="badge badge-primary">TypeScript</span>
+                            <span class="badge badge-primary">REST API</span>
+                        </div>
+                        <button class="btn btn-primary btn-full mt-l">Postuler maintenant</button>
+                    </div>
+
+                    <!-- Project Card 2 -->
+                    <div class="card card-compact">
+                        <div class="project-header">
+                            <h4 class="card-title" style="margin: 0;">Refonte site web corporate</h4>
+                            <span class="badge badge-warning">Urgent</span>
+                        </div>
+                        <p class="card-subtitle" style="margin-bottom: 8px;">Refonte complète d'un site vitrine avec design moderne et animations.</p>
+                        <div class="project-budget">2.000 € - 3.000 €</div>
+                        <div class="project-meta">
+                            <span class="project-meta-item">⏱️ 1 mois</span>
+                            <span class="project-meta-item">📍 Remote</span>
+                            <span class="project-meta-item">💼 Débutant</span>
+                        </div>
+                        <div class="freelancer-skills" style="margin-top: 12px;">
+                            <span class="badge badge-primary">HTML/CSS</span>
+                            <span class="badge badge-primary">JavaScript</span>
+                            <span class="badge badge-primary">Figma</span>
+                        </div>
+                        <button class="btn btn-primary btn-full mt-l">Postuler maintenant</button>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: CLIENT DASHBOARD ========== -->
+                <div class="screen" id="screen-client">
+                    <div class="card">
+                        <h2 class="card-title">Mes Projets</h2>
+                        <button class="btn btn-primary btn-full" onclick="showScreen('create-project')">
+                            ➕ Publier un nouveau projet
+                        </button>
+                    </div>
+
+                    <div class="tabs">
+                        <button class="tab active">Tous</button>
+                        <button class="tab">En cours</button>
+                        <button class="tab">Terminés</button>
+                        <button class="tab">Brouillons</button>
+                    </div>
+
+                    <!-- Project Item 1 -->
+                    <div class="card card-compact">
+                        <div class="project-header">
+                            <div>
+                                <h4 class="card-title" style="margin: 0;">App mobile e-commerce</h4>
+                                <span class="badge badge-success" style="margin-top: 8px;">En cours</span>
+                            </div>
+                        </div>
+                        <p class="card-subtitle" style="margin-top: 8px;">Développement d'une application mobile...</p>
+                        <div class="row space-between" style="margin-top: 12px;">
+                            <div>
+                                <div style="font-size: 13px; color: var(--color-text-secondary);">Budget</div>
+                                <div style="font-weight: 600; color: var(--color-success);">4.500 €</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 13px; color: var(--color-text-secondary);">Candidatures</div>
+                                <div style="font-weight: 600;">12</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 13px; color: var(--color-text-secondary);">Progression</div>
+                                <div style="font-weight: 600;">65%</div>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 65%;"></div>
+                        </div>
+                        <button class="btn btn-outline btn-full mt-l">Voir les détails</button>
+                    </div>
+
+                    <!-- Project Item 2 -->
+                    <div class="card card-compact">
+                        <div class="project-header">
+                            <div>
+                                <h4 class="card-title" style="margin: 0;">Design logo & identité</h4>
+                                <span class="badge badge-info" style="margin-top: 8px;">Publié</span>
+                            </div>
+                        </div>
+                        <p class="card-subtitle" style="margin-top: 8px;">Création complète de l'identité visuelle...</p>
+                        <div class="row space-between" style="margin-top: 12px;">
+                            <div>
+                                <div style="font-size: 13px; color: var(--color-text-secondary);">Budget</div>
+                                <div style="font-weight: 600; color: var(--color-success);">800 €</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 13px; color: var(--color-text-secondary);">Candidatures</div>
+                                <div style="font-weight: 600;">8</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 13px; color: var(--color-text-secondary);">Date limite</div>
+                                <div style="font-weight: 600;">3j</div>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline btn-full mt-l">Voir les candidatures</button>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: CREATE PROJECT ========== -->
+                <div class="screen" id="screen-create-project">
+                    <div class="card">
+                        <h2 class="card-title">Nouveau Projet</h2>
+                        <p class="card-subtitle">Décrivez votre projet en détail</p>
+                        
+                        <form class="stack">
+                            <div class="input-group">
+                                <label class="input-label">Titre du projet</label>
+                                <input type="text" class="input" placeholder="Ex: Développement d'une app mobile" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Catégorie</label>
+                                <select class="input" required>
+                                    <option>Développement Web</option>
+                                    <option>Développement Mobile</option>
+                                    <option>Design UI/UX</option>
+                                    <option>Marketing Digital</option>
+                                    <option>Rédaction</option>
+                                </select>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Description</label>
+                                <textarea class="input textarea" placeholder="Décrivez votre projet, vos attentes, les livrables..." required></textarea>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Budget (€)</label>
+                                <div class="row">
+                                    <input type="number" class="input" placeholder="Min" style="flex: 1;" required>
+                                    <span>-</span>
+                                    <input type="number" class="input" placeholder="Max" style="flex: 1;" required>
+                                </div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Durée estimée</label>
+                                <input type="text" class="input" placeholder="Ex: 2-3 mois" required>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">Compétences requises</label>
+                                <input type="text" class="input" placeholder="Ex: React, Node.js, MongoDB">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary btn-full" onclick="alert('Projet publié !'); showScreen('client'); return false;">
+                                Publier le projet
+                            </button>
+                            <button type="button" class="btn btn-outline btn-full" onclick="showScreen('client')">
+                                Enregistrer comme brouillon
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: ADMIN ========== -->
+                <div class="screen" id="screen-admin">
+                    <div class="card">
+                        <h2 class="card-title">Dashboard Admin 🛡️</h2>
+                        <p class="card-subtitle">Gestion et surveillance de la plateforme</p>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">2,547</div>
+                            <div class="stat-label">Utilisateurs</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">1,234</div>
+                            <div class="stat-label">Projets</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">€450K</div>
+                            <div class="stat-label">Volume</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Actions Rapides</h3>
+                        <div class="stack">
+                            <button class="btn btn-primary btn-full">👥 Gérer les utilisateurs</button>
+                            <button class="btn btn-primary btn-full">📊 Projets actifs</button>
+                            <button class="btn btn-warning btn-full">⚠️ Litiges en attente (3)</button>
+                            <button class="btn btn-secondary btn-full">📈 Rapports & Analytics</button>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Activité Récente</h3>
+                        <div class="stack">
+                            <div class="row">
+                                <span>🆕</span>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 14px; font-weight: 600;">Nouvel utilisateur</div>
+                                    <div class="text-secondary" style="font-size: 12px;">Marie Martin s'est inscrite</div>
+                                </div>
+                                <span class="text-secondary" style="font-size: 11px;">Il y a 5 min</span>
+                            </div>
+                            <div class="row">
+                                <span>✅</span>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 14px; font-weight: 600;">Projet terminé</div>
+                                    <div class="text-secondary" style="font-size: 12px;">App mobile e-commerce</div>
+                                </div>
+                                <span class="text-secondary" style="font-size: 11px;">Il y a 1h</span>
+                            </div>
+                            <div class="row">
+                                <span>💰</span>
+                                <div style="flex: 1;">
+                                    <div style="font-size: 14px; font-weight: 600;">Paiement effectué</div>
+                                    <div class="text-secondary" style="font-size: 12px;">4.500 € - Jean Dupont</div>
+                                </div>
+                                <span class="text-secondary" style="font-size: 11px;">Il y a 2h</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Litiges à Résoudre</h3>
+                        <div class="freelancer-item">
+                            <div class="avatar avatar-small">⚠️</div>
+                            <div class="freelancer-info">
+                                <div class="freelancer-name">Litige #1234</div>
+                                <div class="text-secondary" style="font-size: 13px;">Projet: Site web corporate - Client: ABC Corp</div>
+                                <div class="freelancer-skills">
+                                    <span class="badge badge-danger">Haute priorité</span>
+                                    <span class="badge badge-warning">En attente</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary btn-full">Voir tous les litiges</button>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: MESSAGES ========== -->
+                <div class="screen" id="screen-messages">
+                    <div class="card">
+                        <h2 class="card-title">Messages</h2>
+                        <div class="row">
+                            <input type="search" class="input" placeholder="Rechercher..." style="flex: 1;">
+                        </div>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="avatar avatar-small">MC</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">Marie Claire</span>
+                                <span class="message-time">10:30</span>
+                            </div>
+                            <div class="message-preview">Bonjour, j'ai une question sur le projet...</div>
+                        </div>
+                        <div class="message-unread"></div>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="avatar avatar-small">PD</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">Pierre Dubois</span>
+                                <span class="message-time">Hier</span>
+                            </div>
+                            <div class="message-preview">Merci pour votre retour. Je vais procéder...</div>
+                        </div>
+                    </div>
+
+                    <div class="message-item">
+                        <div class="avatar avatar-small">SL</div>
+                        <div class="message-content">
+                            <div class="message-header">
+                                <span class="message-sender">Sophie Laurent</span>
+                                <span class="message-time">Lundi</span>
+                            </div>
+                            <div class="message-preview">Le livrable est prêt, vous pouvez le télécharger...</div>
+                        </div>
+                    </div>
+
+                    <div class="empty-state">
+                        <div class="empty-icon">📭</div>
+                        <p>Plus de messages</p>
+                    </div>
+                </div>
+
+                <!-- ========== SCREEN: PROFILE ========== -->
+                <div class="screen" id="screen-profile">
+                    <div class="profile-header">
+                        <div class="avatar">JD</div>
+                        <h3 class="profile-name">Jean Dupont</h3>
+                        <p class="profile-title">Développeur Full Stack</p>
+                        <div class="rating" style="justify-content: center; margin-top: 8px;">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span class="rating-text">(4.9 - 42 avis)</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">À propos</h3>
+                        <p class="text-secondary">Développeur passionné avec 5+ ans d'expérience en React, Node.js et React Native. Spécialisé dans le développement d'applications web et mobiles modernes.</p>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Compétences</h3>
+                        <div class="freelancer-skills">
+                            <span class="badge badge-primary">React</span>
+                            <span class="badge badge-primary">Node.js</span>
+                            <span class="badge badge-primary">TypeScript</span>
+                            <span class="badge badge-primary">React Native</span>
+                            <span class="badge badge-primary">MongoDB</span>
+                            <span class="badge badge-primary">PostgreSQL</span>
+                            <span class="badge badge-primary">Docker</span>
+                            <span class="badge badge-primary">AWS</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Statistiques</h3>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value">98%</div>
+                                <div class="stat-label">Taux réussite</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">28</div>
+                                <div class="stat-label">Projets</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">2h</div>
+                                <div class="stat-label">Réponse moy.</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3 class="card-title">Paramètres</h3>
+                        <div class="stack">
+                            <button class="btn btn-outline btn-full">✏️ Modifier le profil</button>
+                            <button class="btn btn-outline btn-full">🔐 Sécurité</button>
+                            <button class="btn btn-outline btn-full">💳 Paiements</button>
+                            <button class="btn btn-outline btn-full">🔔 Notifications</button>
+                            <button class="btn btn-danger btn-full">🚪 Déconnexion</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation -->
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="showScreen('public')">
+                    <div class="nav-icon">🏠</div>
+                    <div>Accueil</div>
+                </div>
+                <div class="nav-item" onclick="showScreen('freelancer')">
+                    <div class="nav-icon">💼</div>
+                    <div>Projets</div>
+                </div>
+                <div class="nav-item" onclick="showScreen('client')">
+                    <div class="nav-icon">📋</div>
+                    <div>Client</div>
+                </div>
+                <div class="nav-item" onclick="showScreen('messages')">
+                    <div class="nav-icon">💬</div>
+                    <div>Messages</div>
+                </div>
+                <div class="nav-item" onclick="showScreen('profile')">
+                    <div class="nav-icon">👤</div>
+                    <div>Profil</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Navigation entre écrans
+        function showScreen(screenName) {
+            // Cache tous les écrans
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+
+            // Affiche l'écran demandé
+            const targetScreen = document.getElementById(`screen-${screenName}`);
+            if (targetScreen) {
+                targetScreen.classList.add('active');
+            }
+
+            // Met à jour la navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Met à jour le titre
+            const titles = {
+                'public': 'AtlasFreelanceApp',
+                'auth': 'Connexion',
+                'freelancer': 'Espace Freelancer',
+                'client': 'Espace Client',
+                'create-project': 'Nouveau Projet',
+                'admin': 'Admin Dashboard',
+                'messages': 'Messages',
+                'profile': 'Mon Profil'
+            };
+            document.getElementById('header-title').textContent = titles[screenName] || 'AtlasFreelanceApp';
+
+            // Scroll en haut
+            document.querySelector('.content').scrollTop = 0;
+        }
+
+        // Toggle theme (clair/sombre)
+        function toggleTheme() {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            
+            if (body.classList.contains('theme-dark')) {
+                body.classList.remove('theme-dark');
+                icon.textContent = '🌙';
+            } else {
+                body.classList.add('theme-dark');
+                icon.textContent = '☀️';
+            }
+        }
+
+        // Simulation de connexion
+        function login(event) {
+            event.preventDefault();
+            alert('Connexion réussie ! 🎉');
+            showScreen('freelancer');
+            return false;
+        }
+
+        // Navigation tabs
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Animation au chargement
+        window.addEventListener('load', () => {
+            document.querySelector('.phone-frame').style.animation = 'fadeIn 0.5s ease';
+        });
+
+        // Gestion du scroll pour la navigation
+        let lastScroll = 0;
+        document.querySelector('.content').addEventListener('scroll', function() {
+            const currentScroll = this.scrollTop;
+            
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                // Scroll down - optionnel: cacher la navigation
+            } else {
+                // Scroll up
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>

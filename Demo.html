@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasbar Digital - Freelance Marketplace</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8B5CF6;
+            --primary-dark: #7C3AED;
+            --primary-light: #A78BFA;
+            --secondary: #EC4899;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --dark: #1F2937;
+            --gray: #6B7280;
+            --light: #F3F4F6;
+            --white: #FFFFFF;
+            --border: #E5E7EB;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .phone-frame {
+            width: 375px;
+            height: 812px;
+            margin: 20px auto;
+            background: var(--white);
+            border: 12px solid var(--dark);
+            border-radius: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .phone-frame::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 150px;
+            height: 25px;
+            background: var(--dark);
+            border-radius: 0 0 20px 20px;
+            z-index: 10;
+        }
+
+        .status-bar {
+            height: 44px;
+            background: var(--primary);
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .app-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .screen {
+            flex: 1;
+            overflow-y: auto;
+            display: none;
+            flex-direction: column;
+            padding-bottom: 70px;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* HEADER */
+        .header {
+            background: var(--primary);
+            color: var(--white);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .header-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* CONTENT */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        /* CARDS */
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .badge-primary {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--primary);
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--warning);
+        }
+
+        /* BUTTONS */
+        .btn {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--white);
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        .btn-primary:active {
+            background: var(--primary-dark);
+            transform: scale(0.98);
+        }
+
+        .btn-secondary {
+            background: var(--light);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+
+        /* INPUTS */
+        .input-group {
+            margin-bottom: 12px;
+        }
+
+        .input-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--gray);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        /* NAVIGATION */
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: var(--white);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-top: 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            color: var(--gray);
+            transition: color 0.3s;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* RATINGS */
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 8px 0;
+        }
+
+        .stars {
+            color: var(--warning);
+            font-size: 14px;
+        }
+
+        .rating-text {
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        /* PROFILE SECTION */
+        .profile-header {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            margin: 0 auto 12px;
+            font-weight: 700;
+        }
+
+        .profile-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--dark);
+        }
+
+        .profile-title {
+            font-size: 13px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* STATS */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--gray);
+            margin-top: 4px;
+        }
+
+        /* JOB DETAILS */
+        .job-meta {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            font-size: 13px;
+        }
+
+        .job-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .job-budget {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--success);
+            margin: 12px 0;
+        }
+
+        .job-description {
+            font-size: 13px;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        /* FREELANCER CARD */
+        .freelancer-card {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .freelancer-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .freelancer-info {
+            flex: 1;
+        }
+
+        .freelancer-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .freelancer-skill {
+            font-size: 12px;
+            color: var(--gray);
+            margin-top: 2px;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: flex-end;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        .modal-content {
+            background: var(--white);
+            width: 100%;
+            height: 80%;
+            border-radius: 24px 24px 0 0;
+            padding: 20px;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        .modal-header {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        /* SEARCH */
+        .search-box {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        /* FILTERS */
+        .filter-chips {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+            margin-bottom: 12px;
+        }
+
+        .chip {
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            background: var(--white);
+            font-size: 12px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .chip.active {
+            background: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        /* TABS */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+            gap: 16px;
+        }
+
+        .tab {
+            padding: 12px 0;
+            border: none;
+            background: none;
+            color: var(--gray);
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* SCROLLBAR */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 12px 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--gray);
+            font-size: 13px;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .mt-8 {
+            margin-top: 8px;
+        }
+
+        .mt-12 {
+            margin-top: 12px;
+        }
+
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span>9:41</span>
+            <span>📶 4G</span>
+        </div>
+
+        <div class="app-container">
+            <!-- HOME SCREEN -->
+            <div class="screen active" id="homeScreen">
+                <div class="header">
+                    <div class="header-title">Kasbar Digital</div>
+                    <div class="header-icon" onclick="goToScreen('profileScreen')">👤</div>
+                </div>
+                <div class="content">
+                    <div class="search-box">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" placeholder="Search jobs...">
+                    </div>
+
+                    <div class="filter-chips">
+                        <div class="chip active" onclick="filterJobs('all')">All</div>
+                        <div class="chip" onclick="filterJobs('web')">Web Dev</div>
+                        <div class="chip" onclick="filterJobs('design')">Design</div>
+                        <div class="chip" onclick="filterJobs('writing')">Writing</div>
+                    </div>
+
+                    <h3 style="font-size: 14px; font-weight: 700; margin-bottom: 12px;">Featured Jobs</h3>
+
+                    <!-- JOB 1 -->
+                    <div class="card" onclick="goToScreen('jobDetailScreen')">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Build E-Commerce Website</div>
+                                <span class="badge badge-primary mt-8">Urgent</span>
+                            </div>
+                        </div>
+                        <div class="job-meta">
+                            <div class="job-meta-item">⏱️ 2-3 weeks</div>
+                            <div class="job-meta-item">👤 Intermediate</div>
+                        </div>
+                        <div class="job-budget">$1,200 - $1,800</div>
+                        <div class="job-description">React + Node.js project for Moroccan fashion brand. Need experienced dev with e-commerce experience.</div>
+                        <div style="display: flex; gap: 6px; margin-top: 12px;">
+                            <span class="badge badge-warning">React</span>
+                            <span class="badge badge-warning">Node.js</span>
+                        </div>
+                    </div>
+
+                    <!-- JOB 2 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Logo Design + Branding</div>
+                                <span class="badge badge-success mt-8">Open</span>
+                            </div>
+                        </div>
+                        <div class="job-meta">
+                            <div class="job-meta-item">⏱️ 1-2 weeks</div>
+                            <div class="job-meta-item">👤 Beginner</div>
+                        </div>
+                        <div class="job-budget">$400 - $800</div>
+                        <div class="job-description">Need creative logo for digital marketing agency. Must include 3-4 design variations.</div>
+                        <div style="display: flex; gap: 6px; margin-top: 12px;">
+                            <span class="badge badge-warning">Design</span>
+                            <span class="badge badge-warning">Branding</span>
+                        </div>
+                    </div>
+
+                    <!-- JOB 3 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <div>
+                                <div class="card-title">Content Writing - Blog</div>
+                                <span class="badge badge-success mt-8">Open</span>
+                            </div>
+                        </div>
+                        <div class="job-meta">
+                            <div class="job-meta-item">⏱️ Ongoing</div>
+                            <div class="job-meta-item">👤 Beginner</div>
+                        </div>
+                        <div class="job-budget">$15 - $25 per article</div>
+                        <div class="job-description">Looking for writers to create 1000-word articles about tech and business. 5+ articles/month.</div>
+                        <div style="display: flex; gap: 6px; margin-top: 12px;">
+                            <span class="badge badge-warning">Writing</span>
+                            <span class="badge badge-warning">SEO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- JOB DETAIL SCREEN -->
+            <div class="screen" id="jobDetailScreen">
+                <div class="header">
+                    <span onclick="goToScreen('homeScreen')" style="cursor: pointer; font-size: 18px;">←</span>
+                    <div class="header-title">Job Details</div>
+                    <div style="width: 20px;"></div>
+                </div>
+                <div class="content">
+                    <div class="card">
+                        <div class="card-title" style="font-size: 18px; margin-bottom: 8px;">Build E-Commerce Website</div>
+                        <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+                            <span class="badge badge-primary">Urgent</span>
+                            <span class="badge badge-warning">Featured</span>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div style="margin: 12px 0;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Budget</div>
+                            <div class="job-budget">$1,200 - $1,800</div>
+                        </div>
+
+                        <div style="margin: 12px 0;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Project Duration</div>
+                            <div class="text-muted">2-3 weeks (Expected)</div>
+                        </div>
+
+                        <div style="margin: 12px 0;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Experience Level</div>
+                            <div class="text-muted">Intermediate to Advanced</div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div style="margin: 12px 0;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Description</div>
+                            <div class="job-description">We need an experienced web developer to build a modern e-commerce platform for our Moroccan fashion brand. The website should include:
+
+• Product catalog with filters
+• Shopping cart and checkout
+• Payment integration (Stripe)
+• Admin dashboard
+• Mobile responsive design
+• SEO optimized
+
+Perfect for developers with React and Node.js expertise.</div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div style="margin: 12px 0;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Required Skills</div>
+                            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                                <span class="badge badge-warning">React.js</span>
+                                <span class="badge badge-warning">Node.js</span>
+                                <span class="badge badge-warning">MongoDB</span>
+                                <span class="badge badge-warning">Stripe API</span>
+                            </div>
+                        </div>
+
+                        <div class="divider"></div>
+
+                        <div style="margin: 12px 0;">
+                            <div style="font-weight: 600; margin-bottom: 8px;">Posted by</div>
+                            <div class="freelancer-card" style="background: var(--light); padding: 12px; border-radius: 8px; margin-top: 8px;">
+                                <div class="freelancer-avatar">FK</div>
+                                <div class="freelancer-info">
+                                    <div class="freelancer-name">Fashion Kingdom LLC</div>
+                                    <div class="freelancer-skill">Casablanca, Morocco</div>
+                                    <div class="rating">
+                                        <span class="stars">★★★★★</span>
+                                        <span class="rating-text">(24 reviews)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="showModal('bidModal')">Send Proposal</button>
+                    <button class="btn btn-secondary">Save Job</button>
+                </div>
+            </div>
+
+            <!-- FREELANCER PROFILE SCREEN -->
+            <div class="screen" id="profileScreen">
+                <div class="header">
+                    <span onclick="goToScreen('homeScreen')" style="cursor: pointer; font-size: 18px;">←</span>
+                    <div class="header-title">My Profile</div>
+                    <div style="width: 20px;"></div>
+                </div>
+                <div class="content">
+                    <div class="profile-header">
+                        <div class="profile-avatar">AM</div>
+                        <div class="profile-name">Ahmed Mezouar</div>
+                        <div class="profile-title">Full-Stack Developer</div>
+                        <div class="rating" style="justify-content: center;">
+                            <span class="stars">★★★★★</span>
+                            <span class="rating-text">(18 reviews)</span>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value">12</div>
+                            <div class="stat-label">Projects</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">$8.5k</div>
+                            <div class="stat-label">Earned</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value">95%</div>
+                            <div class="stat-label">Success</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-weight: 600; margin-bottom: 8px;">About</div>
+                        <div class="text-muted">Experienced full-stack developer with 5+ years in web development. Specialized in React, Node.js, and cloud deployment. Based in Casablanca, Morocco.</div>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-weight: 600; margin-bottom: 12px;">Skills</div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                            <span class="badge badge-primary">React</span>
+                            <span class="badge badge-primary">Node.js</span>
+                            <span class="badge badge-primary">MongoDB</span>
+                            <span class="badge badge-primary">AWS</span>
+                            <span class="badge badge-primary">Docker</span>
+                            <span class="badge badge-primary">GraphQL</span>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-weight: 600; margin-bottom: 12px;">Portfolio</div>
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 120px; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: flex-end; color: white; padding: 12px; font-weight: 600;">E-Commerce Store</div>
+                        <div style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 120px; border-radius: 8px; color: white; padding: 12px; font-weight: 600;">Social Media App</div>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-weight: 600; margin-bottom: 12px;">Hourly Rate</div>
+                        <div style="font-size: 24px; font-weight: 700; color: var(--primary);">$35/hour</div>
+                        <button class="btn btn-secondary" style="margin-top: 12px;">Edit Profile</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MESSAGING SCREEN -->
+            <div class="screen" id="messagesScreen">
+                <div class="header">
+                    <div class="header-title">Messages</div>
+                    <div class="header-icon">✎</div>
+                </div>
+                <div class="content">
+                    <div class="card" onclick="goToScreen('chatScreen')" style="display: flex; gap: 12px; cursor: pointer;">
+                        <div class="freelancer-avatar">FK</div>
+                        <div style="flex: 1;">
+                            <div class="freelancer-name">Fashion Kingdom</div>
+                            <div class="text-muted">Great work on the design! Can we add...</div>
+                            <div class="text-muted" style="margin-top: 4px; font-size: 11px;">2 min ago</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="display: flex; gap: 12px;">
+                        <div class="freelancer-avatar" style="background: linear-gradient(135deg, #EC4899, #8B5CF6);">PD</div>
+                        <div style="flex: 1;">
+                            <div class="freelancer-name">Project Design Co</div>
+                            <div class="text-muted">When can you start the new project?</div>
+                            <div class="text-muted" style="margin-top: 4px; font-size: 11px;">1 hour ago</div>
+                        </div>
+                    </div>
+
+                    <div class="card" style="display: flex; gap: 12px;">
+                        <div class="freelancer-avatar" style="background: linear-gradient(135deg, #10B981, #059669);">MB</div>
+                        <div style="flex: 1;">
+                            <div class="freelancer-name">Mohammed Business</div>
+                            <div class="text-muted">Invoice has been approved</div>
+                            <div class="text-muted" style="margin-top: 4px; font-size: 11px;">Yesterday</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAT SCREEN -->
+            <div class="screen" id="chatScreen">
+                <div class="header">
+                    <span onclick="goToScreen('messagesScreen')" style="cursor: pointer; font-size: 18px;">←</span>
+                    <div style="text-align: center;">
+                        <div class="header-title">Fashion Kingdom</div>
+                        <div style="font-size: 11px; color: rgba(255,255,255,0.8);">Online</div>
+                    </div>
+                    <div class="header-icon">☎</div>
+                </div>
+                <div class="content" style="display: flex; flex-direction: column;">
+                    <div style="text-align: center; margin-bottom: 12px; color: var(--gray); font-size: 12px;">Today</div>
+
+                    <div style="display: flex; margin-bottom: 12px;">
+                        <div style="background: var(--light); padding: 10px 12px; border-radius: 12px; max-width: 70%; font-size: 13px;">
+                            Hi Ahmed, your work on the design looks amazing!
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                        <div style="background: var(--primary); color: white; padding: 10px 12px; border-radius: 12px; max-width: 70%; font-size: 13px;">
+                            Thank you! Happy to refine anything you'd like.
+                        </div>
+                    </div>
+
+                    <div style="display: flex; margin-bottom: 12px;">
+                        <div style="background: var(--light); padding: 10px 12px; border-radius: 12px; max-width: 70%; font-size: 13px;">
+                            Can we add more color variations?
+                        </div>
+                    </div>
+
+                    <div style="display: flex; justify-content: flex-end; margin-bottom: 12px;">
+                        <div style="background: var(--primary); color: white; padding: 10px 12px; border-radius: 12px; max-width: 70%; font-size: 13px;">
+                            Absolutely! I'll have them ready by tomorrow.
+                        </div>
+                    </div>
+
+                    <div style="flex: 1;"></div>
+
+                    <div style="display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border);">
+                        <input type="text" class="input-field" placeholder="Type message..." style="margin: 0; flex: 1;">
+                        <button class="btn" style="padding: 8px 12px; background: var(--primary); color: white; border: none;">📤</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EARNINGS SCREEN -->
+            <div class="screen" id="earningsScreen">
+                <div class="header">
+                    <div class="header-title">Earnings</div>
+                    <div class="header-icon">📊</div>
+                </div>
+                <div class="content">
+                    <div class="card" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white;">
+                        <div style="font-size: 13px; opacity: 0.9;">Total Earnings</div>
+                        <div style="font-size: 32px; font-weight: 700; margin-top: 8px;">$8,540</div>
+                        <div style="font-size: 12px; opacity: 0.8; margin-top: 8px;">+$450 this month</div>
+                    </div>
+
+                    <div class="card">
+                        <div style="font-weight: 600; margin-bottom: 12px;">Recent Earnings</div>
+                        <div style="font-weight: 600; margin-bottom: 8px; color: var(--dark);">Fashion Kingdom - E-Commerce</div>
+                        <div class="flex-between">
+                            <div class="text-muted">Completed 2 days ago</div>
+                            <div style="font-weight: 600; color: var(--success);">+$450</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex-between">
+                            <div>
+                                <div style="font-weight: 600; color: var(--dark);">Project Design - Logo</div>
+                                <div class="text-muted" style="margin-top: 4px;">Completed 1 week ago</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--success); text-align: right;">+$250</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="flex-between">
+                            <div>
+                                <div style="font-weight: 600; color: var(--dark);">Tech Blog - Content</div>
+                                <div class="text-muted" style="margin-top: 4px;">Completed 2 weeks ago</div>
+                            </div>
+                            <div style="font-weight: 600; color: var(--success); text-align: right;">+$120</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary">Withdraw Earnings</button>
+                </div>
+            </div>
+
+            <!-- BOTTOM NAVIGATION -->
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="goToScreen('homeScreen'); updateNav(0)">
+                    <div class="nav-icon">🏠</div>
+                    <div>Home</div>
+                </div>
+                <div class="nav-item" onclick="goToScreen('messagesScreen'); updateNav(1)">
+                    <div class="nav-icon">💬</div>
+                    <div>Messages</div>
+                </div>
+                <div class="nav-item" onclick="goToScreen('earningsScreen'); updateNav(2)">
+                    <div class="nav-icon">💰</div>
+                    <div>Earnings</div>
+                </div>
+                <div class="nav-item" onclick="goToScreen('profileScreen'); updateNav(3)">
+                    <div class="nav-icon">👤</div>
+                    <div>Profile</div>
+                </div>
+            </div>
+
+            <!-- BID MODAL -->
+            <div class="modal" id="bidModal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <span>Send Proposal</span>
+                        <button class="close-btn" onclick="hideModal('bidModal')">✕</button>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Proposed Price ($)</label>
+                        <input type="number" class="input-field" placeholder="1200" value="1200">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Timeline (weeks)</label>
+                        <input type="number" class="input-field" placeholder="2.5" value="2">
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Cover Letter</label>
+                        <textarea class="input-field" style="resize: vertical; min-height: 120px;" placeholder="Tell the client why you're perfect for this job...">Hi, I'm Ahmed Mezouar, a full-stack developer with 5+ years experience. I've built similar e-commerce platforms and would love to work on this project. I can deliver quality code with excellent documentation.</textarea>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="input-label">Attachments</label>
+                        <div style="border: 2px dashed var(--border); padding: 16px; text-align: center; border-radius: 8px; cursor: pointer;">
+                            <div style="font-size: 24px; margin-bottom: 8px;">📎</div>
+                            <div style="font-size: 13px; color: var(--gray);">Click to upload portfolio or samples</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="hideModal('bidModal'); alert('Proposal sent successfully! ✓')">Send Proposal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.add('active');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.remove('active');
+        }
+
+        function updateNav(index) {
+            document.querySelectorAll('.nav-item').forEach((item, i) => {
+                item.classList.toggle('active', i === index);
+            });
+        }
+
+        function filterJobs(category) {
+            document.querySelectorAll('.chip').forEach(chip => chip.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Modal close on outside click
+        document.getElementById('bidModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideModal('bidModal');
+            }
+        });
+    </script>
+</body>
+</html>
