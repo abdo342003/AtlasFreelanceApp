@@ -13,6 +13,7 @@ import { ScreenStackHeaderSearchBarView } from 'react-native-screens';
 import AuthStack from './src/navigation/AuthStack';
 import AdminStack from './src/navigation/AdminStack';
 import MainStack from './src/navigation/MainStack';
+import PublicStack from './src/navigation/PublicStack';
 import {useAuth,AuthProvider} from './src/context/AuthContext';
 
 const Root = createNativeStackNavigator();
@@ -21,14 +22,17 @@ export function RootNavigator() {
   return (
     <NavigationContainer>
       <Root.Navigator screenOptions={{ headerShown: false }}>
-        {!user &&(
-        <Root.Screen name="Auth" component={AuthStack} />
+        {!user && (
+          <>
+            <Root.Screen name="Public" component={PublicStack} />
+            <Root.Screen name="Auth" component={AuthStack} />
+          </>
         )}
         {user && user.role === 'admin'&&(
-        <Root.Screen name="Admin" component={AdminStack} />
+          <Root.Screen name="Admin" component={AdminStack} />
         )}
         {user && user.role==='user' &&(
-        <Root.Screen name="Main" component={MainStack}/>
+          <Root.Screen name="Main" component={MainStack}/>
         )}
       </Root.Navigator>
     </NavigationContainer>

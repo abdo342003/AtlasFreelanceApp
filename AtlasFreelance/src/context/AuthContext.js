@@ -1,48 +1,157 @@
 // src/context/AuthContext.js
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// 1. Kankhl9o l-"Sandou9" (Context)
-// Kandiro 'null' f l-bdya 7it mazal ma3ndna ta data
 const AuthContext = createContext(null);
 
-// 2. Hada howa "L-Ghlaya" (Provider Component)
-// 'children' howa l-App dialek kamla li ghadi t-ghllfha b had Provider
 export function AuthProvider({ children }) {
-  
-  // 3. L-State: Hna fin mkhbya l-ma3louma "Chkoun connecté?"
-  // f l-bdya: user = null (ya3ni ma mconnecté 7ed)
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // --- Fonctions d'action (Daba ghir Fake / Simulation) ---
+  // Load user from storage on app start
+  useEffect(() => {
+    loadUserFromStorage();
+  }, []);
 
-  // Bach ndkhlo b sifa dyal Admin
-  function loginAsAdmin() {
-    setUser({ email: 'admin@atlas.com', role: 'admin' });
-  }
+  const loadUserFromStorage = async () => {
+    try {
+      const userString = await AsyncStorage.getItem('user');
+      if (userString) {
+        const userData = JSON.parse(userString);
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error('Error loading user:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Bach ndkhlo b sifa dyal User 3adi
-  function loginAsUser() {
-    setUser({ email: 'user@atlas.com', role: 'user' });
-  }
+  const saveUserToStorage = async (userData) => {
+    try {
+      await AsyncStorage.setItem('user', JSON.stringify(userData));
+    } catch (error) {
+      console.error('Error saving user:', error);
+    }
+  };
 
-  // Bach ndiro Déconnexion (Kanrdo user = null)
-  function logout() {
+  const removeUserFromStorage = async () => {
+    try {
+      await AsyncStorage.removeItem('user');
+    } catch (error) {
+      console.error('Error removing user:', error);
+    }
+  };
+
+  // Admin login
+  const loginAsAdmin = async () => {
+    const adminUser = { 
+      id: 'admin-1',
+      email: 'admin@atlas.com', 
+      name: 'Admin Atlas',
+      role: 'admin',
+      token: 'admin-token-' + Date.now()
+    };
+    setUser(adminUser);
+    await saveUserToStorage(adminUser);
+  };
+
+  // Regular user login
+  const loginAsUser = async () => {
+    const regularUser = { 
+      id: 'user-1',
+      email: 'user@atlas.com', 
+      name: 'User Atlas',
+      role: 'user',
+      token: 'user-token-' + Date.now()
+    };
+    setUser(regularUser);
+    await saveUserToStorage(regularUser);
+  };
+
+  // Login with credentials (real auth)
+  const login = async (email, password) => {
+    try {
+      // TODO: Replace with actual API call
+      // const response = await fetch('API_URL/auth/login', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify({ email, password })
+      // });
+      // const data = await response.json();
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Mock user based on email
+      const userData = {
+        id: email.includes('admin') ? 'admin-1' : 'user-' + Date.now(),
+        email,
+        name: email.includes('admin') ? 'Admin User' : 'Regular User',
+        role: email.includes('admin') ? 'admin' : 'user',
+        token: 'token-' + Date.now(),
+      };
+      
+      setUser(userData);
+      await saveUserToStorage(userData);
+      
+      return { success: true, data: userData };
+    } catch (error) {
+      console.error('Login error:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Signup function
+  const signup = async (userData) => {
+    try {
+      // TODO: Replace with actual API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const newUser = {
+        id: 'user-' + Date.now(),
+        ...userData,
+        role: userData.role || 'user',
+        token: 'token-' + Date.now(),
+      };
+      
+      setUser(newUser);
+      await saveUserToStorage(newUser);
+      
+      return { success: true, data: newUser };
+    } catch (error) {
+      console.error('Signup error:', error);
+      return { success: false, error: error.message };
+    }
+  };
+
+  // Logout
+  const logout = async () => {
     setUser(null);
-  }
+    await removeUserFromStorage();
+  };
 
-  // 4. Return: Hna kan-fourniw (kan3tiw) l-Data l l-App
-  // value={{...}} : Hna fin jm3na l-variable o les fonctions f pack wa7d
+  const value = {
+    user,
+    loading,
+    login,
+    signup,
+    loginAsAdmin,
+    loginAsUser,
+    logout,
+  };
+
   return (
-    <AuthContext.Provider value={{ user, loginAsAdmin, loginAsUser, logout }}>
-      {children} 
-      {/* 'children' hna hiya <RootNavigator /> li f App.js */}
+    <AuthContext.Provider value={value}>
+      {children}
     </AuthContext.Provider>
   );
 }
 
-// 5. Custom Hook: Raccourci sahal
-// Blast ma tb9a tktb "useContext(AuthContext)" f kol blassa,
-// kat3yt ghir 3la "useAuth()"
 export function useAuth() {
-  return useContext(AuthContext);
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
 }

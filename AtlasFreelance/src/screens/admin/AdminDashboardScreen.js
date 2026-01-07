@@ -17,9 +17,20 @@ export default function AdminDashboardScreen() {
   const navigation = useNavigation();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
   const [analytics, setAnalytics] = useState({
-    kpis: {},
-    charts: {},
+    kpis: {
+      totalUsers: 0,
+      activeProjects: 0,
+      openDisputes: 0,
+      monthlyRevenue: 0,
+      newUsers: 0,
+      completedProjects: 0,
+    },
+    charts: {
+      userGrowth: [],
+      projectsByCategory: [],
+    },
     recentActivity: [],
   });
 
@@ -30,13 +41,21 @@ export default function AdminDashboardScreen() {
   const loadDashboardData = async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await adminAnalyticsService.getDashboardAnalytics();
       
-      if (response.success) {
-        setAnalytics(response.data);
+      if (response && response.success && response.data) {
+        setAnalytics({
+          kpis: response.data.kpis || {},
+          charts: response.data.charts || {},
+          recentActivity: response.data.recentActivity || [],
+        });
+      } else {
+        throw new Error('Invalid response format');
       }
-    } catch (error) {
-      console.error('Error loading dashboard:', error);
+    } catch (err) {
+      console.error('Error loading dashboard:', err);
+      setError(err.message || 'Failed to load dashboard data');
     } finally {
       setLoading(false);
     }
@@ -57,7 +76,20 @@ export default function AdminDashboardScreen() {
     );
   }
 
-  const { kpis, charts, recentActivity } = analytics;
+  if (error) {
+    return (
+      <View style={styles.errorContainer}>
+        <Text style={styles.errorIcon}>⚠️</Text>
+        <Text style={styles.errorTitle}>Erreur de chargement</Text>
+        <Text style={styles.errorMessage}>{error}</Text>
+        <TouchableOpacity style={styles.retryButton} onPress={loadDashboardData}>
+          <Text style={styles.retryButtonText}>Réessayer</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  const { kpis = {}, charts = {}, recentActivity = [] } = analytics || {};
 
   return (
     <ScrollView
@@ -417,6 +449,40 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 12,
     padding: 16,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 24,
+    backgroundColor: '#f8fafc',
+  },
+  errorIcon: {
+    fontSize: 64,
+    marginBottom: 16,
+  },
+  errorTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#1e293b',
+    marginBottom: 8,
+  },
+  errorMessage: {
+    fontSize: 14,
+    color: '#64748b',
+    textAlign: 'center',
+    marginBottom: 24,
+  },
+  retryButton: {
+    backgroundColor: '#3b82f6',
+    paddingHorizontal: 24,
+    paddingVertical: 12,
+    borderRadius: 8,
+  },
+  retryButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: '600',
   },
   categoryItem: {
     marginBottom: 16,
