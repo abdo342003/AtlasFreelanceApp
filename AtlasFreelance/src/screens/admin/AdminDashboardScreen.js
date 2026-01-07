@@ -1,5 +1,5 @@
 // src/screens/admin/AdminDashboardScreen.js
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { 
   View, 
   Text, 
@@ -7,7 +7,8 @@ import {
   StyleSheet, 
   RefreshControl, 
   TouchableOpacity,
-  ActivityIndicator 
+  ActivityIndicator,
+  Animated 
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import KPICard from '../../components/admin/KPICard';
@@ -18,6 +19,8 @@ export default function AdminDashboardScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
   const [analytics, setAnalytics] = useState({
     kpis: {
       totalUsers: 0,
@@ -37,6 +40,24 @@ export default function AdminDashboardScreen() {
   useEffect(() => {
     loadDashboardData();
   }, []);
+
+  useEffect(() => {
+    if (!loading) {
+      Animated.parallel([
+        Animated.timing(fadeAnim, {
+          toValue: 1,
+          duration: 600,
+          useNativeDriver: true,
+        }),
+        Animated.spring(slideAnim, {
+          toValue: 0,
+          friction: 8,
+          tension: 40,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [loading]);
 
   const loadDashboardData = async () => {
     try {
@@ -98,23 +119,40 @@ export default function AdminDashboardScreen() {
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
       }
     >
-      <View style={styles.header}>
+      <Animated.View 
+        style={[
+          styles.header,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         <Text style={styles.title}>Dashboard Admin</Text>
         <Text style={styles.subtitle}>Vue d'ensemble de la plateforme</Text>
-      </View>
+      </Animated.View>
 
       {/* KPI Cards */}
-      <View style={styles.kpiGrid}>
+      <Animated.View 
+        style={[
+          styles.kpiGrid,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         <View style={styles.kpiRow}>
           <View style={styles.kpiCol}>
-            <KPICard
-              title="Utilisateurs"
-              value={kpis.totalUsers || 0}
-              change={12}
-              color="#3b82f6"
-              icon="👥"
-              onPress={() => navigation.navigate('AdminUsers')}
-            />
+            <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('AdminUsers')}>
+              <KPICard
+                title="Utilisateurs"
+                value={kpis.totalUsers || 0}
+                change={12}
+                color="#3b82f6"
+                icon="👥"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.kpiCol}>
             <KPICard
@@ -129,14 +167,15 @@ export default function AdminDashboardScreen() {
 
         <View style={styles.kpiRow}>
           <View style={styles.kpiCol}>
-            <KPICard
-              title="Projets actifs"
-              value={kpis.activeProjects || 0}
-              change={5}
-              color="#8b5cf6"
-              icon="📊"
-              onPress={() => navigation.navigate('AdminProjects')}
-            />
+            <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('AdminProjects')}>
+              <KPICard
+                title="Projets actifs"
+                value={kpis.activeProjects || 0}
+                change={5}
+                color="#8b5cf6"
+                icon="📊"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.kpiCol}>
             <KPICard
@@ -151,14 +190,15 @@ export default function AdminDashboardScreen() {
 
         <View style={styles.kpiRow}>
           <View style={styles.kpiCol}>
-            <KPICard
-              title="Litiges"
-              value={kpis.openDisputes || 0}
-              change={-2}
-              color="#f59e0b"
-              icon="⚠️"
-              onPress={() => navigation.navigate('AdminDisputes')}
-            />
+            <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('AdminDisputes')}>
+              <KPICard
+                title="Litiges"
+                value={kpis.openDisputes || 0}
+                change={-2}
+                color="#f59e0b"
+                icon="⚠️"
+              />
+            </TouchableOpacity>
           </View>
           <View style={styles.kpiCol}>
             <KPICard
@@ -170,10 +210,17 @@ export default function AdminDashboardScreen() {
             />
           </View>
         </View>
-      </View>
+      </Animated.View>
 
       {/* Quick Actions */}
-      <View style={styles.section}>
+      <Animated.View 
+        style={[
+          styles.section,
+          {
+            opacity: fadeAnim,
+          },
+        ]}
+      >
         <Text style={styles.sectionTitle}>Actions rapides</Text>
         <View style={styles.actionsGrid}>
           <TouchableOpacity
@@ -208,10 +255,17 @@ export default function AdminDashboardScreen() {
             <Text style={styles.actionTitle}>Paramètres</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
 
       {/* Recent Activity */}
-      <View style={styles.section}>
+      <Animated.View 
+        style={[
+          styles.section,
+          {
+            opacity: fadeAnim,
+          },
+        ]}
+      >
         <Text style={styles.sectionTitle}>Activité récente</Text>
         <View style={styles.activityContainer}>
           {recentActivity.slice(0, 5).map((activity) => (
@@ -238,11 +292,18 @@ export default function AdminDashboardScreen() {
             </View>
           ))}
         </View>
-      </View>
+      </Animated.View>
 
       {/* User Growth Chart */}
       {charts.userGrowth && (
-        <View style={styles.section}>
+        <Animated.View 
+          style={[
+            styles.section,
+            {
+              opacity: fadeAnim,
+            },
+          ]}
+        >
           <Text style={styles.sectionTitle}>Croissance des utilisateurs (12 mois)</Text>
           <View style={styles.chartContainer}>
             <View style={styles.chartBars}>
@@ -264,12 +325,19 @@ export default function AdminDashboardScreen() {
               ))}
             </View>
           </View>
-        </View>
+        </Animated.View>
       )}
 
       {/* Projects by Category */}
       {charts.projectsByCategory && (
-        <View style={styles.section}>
+        <Animated.View 
+          style={[
+            styles.section,
+            {
+              opacity: fadeAnim,
+            },
+          ]}
+        >
           <Text style={styles.sectionTitle}>Projets par catégorie</Text>
           <View style={styles.categoryContainer}>
             {charts.projectsByCategory.map((item, index) => (
@@ -291,7 +359,7 @@ export default function AdminDashboardScreen() {
               </View>
             ))}
           </View>
-        </View>
+        </Animated.View>
       )}
 
       <View style={styles.bottomPadding} />

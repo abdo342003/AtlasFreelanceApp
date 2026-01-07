@@ -2,7 +2,6 @@
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/auth/LoginScreen';
-import RegisterScreen from '../screens/auth/RegisterScreen';
 import SignupRoleScreen from '../screens/auth/SignupRoleScreen';
 import SignupFreelancerScreen from '../screens/auth/SignupFreelancerScreen';
 import SignupClientScreen from '../screens/auth/SignupClientScreen';
@@ -55,12 +54,6 @@ export default function AuthStack(){
             name="VerifyEmail" 
             component={VerifyEmailScreen} 
             options={{ title: 'Vérification email' }}
-          />
-          {/* Keep old register screen for backward compatibility */}
-          <Auth.Screen 
-            name="Register" 
-            component={RegisterScreen} 
-            options={{ title: 'Inscription' }}
           />
         </Auth.Navigator>
     )

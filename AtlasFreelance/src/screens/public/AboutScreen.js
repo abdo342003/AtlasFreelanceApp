@@ -1,19 +1,46 @@
 // src/screens/public/AboutScreen.js
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { theme } from '../../theme';
 
 export default function AboutScreen({ navigation }) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
+      <Animated.View 
+        style={[
+          styles.header,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         <Text style={styles.title}>À propos d'Atlas Freelance</Text>
         <Text style={styles.subtitle}>
           La plateforme de référence pour le freelancing au Maroc
         </Text>
-      </View>
+      </Animated.View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Notre mission</Text>
@@ -29,37 +56,45 @@ export default function AboutScreen({ navigation }) {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Nos valeurs</Text>
         
-        <Card style={styles.valueCard}>
-          <Text style={styles.valueIcon}>🤝</Text>
-          <Text style={styles.valueTitle}>Confiance</Text>
-          <Text style={styles.valueDescription}>
-            Nous vérifions tous nos freelancers et assurons la sécurité des paiements
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8}>
+          <Card variant="elevated" style={styles.valueCard}>
+            <Text style={styles.valueIcon}>🤝</Text>
+            <Text style={styles.valueTitle}>Confiance</Text>
+            <Text style={styles.valueDescription}>
+              Nous vérifions tous nos freelancers et assurons la sécurité des paiements
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.valueCard}>
-          <Text style={styles.valueIcon}>⭐</Text>
-          <Text style={styles.valueTitle}>Excellence</Text>
-          <Text style={styles.valueDescription}>
-            Nous ne travaillons qu'avec des freelancers qualifiés et expérimentés
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8}>
+          <Card variant="elevated" style={styles.valueCard}>
+            <Text style={styles.valueIcon}>⭐</Text>
+            <Text style={styles.valueTitle}>Excellence</Text>
+            <Text style={styles.valueDescription}>
+              Nous ne travaillons qu'avec des freelancers qualifiés et expérimentés
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.valueCard}>
-          <Text style={styles.valueIcon}>🚀</Text>
-          <Text style={styles.valueTitle}>Innovation</Text>
-          <Text style={styles.valueDescription}>
-            Nous améliorons constamment notre plateforme pour une meilleure expérience
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8}>
+          <Card variant="elevated" style={styles.valueCard}>
+            <Text style={styles.valueIcon}>🚀</Text>
+            <Text style={styles.valueTitle}>Innovation</Text>
+            <Text style={styles.valueDescription}>
+              Nous améliorons constamment notre plateforme pour une meilleure expérience
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.valueCard}>
-          <Text style={styles.valueIcon}>💡</Text>
-          <Text style={styles.valueTitle}>Transparence</Text>
-          <Text style={styles.valueDescription}>
-            Tarifs clairs, pas de frais cachés, communication ouverte
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8}>
+          <Card variant="elevated" style={styles.valueCard}>
+            <Text style={styles.valueIcon}>💡</Text>
+            <Text style={styles.valueTitle}>Transparence</Text>
+            <Text style={styles.valueDescription}>
+              Tarifs clairs, pas de frais cachés, communication ouverte
+            </Text>
+          </Card>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.section}>

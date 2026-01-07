@@ -131,21 +131,36 @@ export default function HomeScreen({ navigation }) {
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Projets récents</Text>
-          <TouchableOpacity>
-            <Text style={styles.seeAll}>Voir tout</Text>
+          <TouchableOpacity onPress={() => Alert.alert('Navigation', 'Voir tous les projets')}>
+            <Text style={styles.seeAll}>Voir tout →</Text>
           </TouchableOpacity>
         </View>
         {projects.map((project) => (
-          <Card key={project.id} style={styles.projectCard}>
-            <Text style={styles.projectTitle}>{project.title}</Text>
-            <Text style={styles.projectDescription} numberOfLines={2}>
-              {project.description}
-            </Text>
-            <View style={styles.projectMeta}>
-              <Text style={styles.projectBudget}>{project.budget} MAD</Text>
-              <Text style={styles.projectCategory}>• {project.category}</Text>
-            </View>
-          </Card>
+          <TouchableOpacity
+            key={project.id}
+            activeOpacity={0.7}
+            onPress={() => Alert.alert(project.title, project.description)}
+          >
+            <Card style={styles.projectCard} variant="elevated">
+              <View style={styles.projectHeader}>
+                <Text style={styles.projectTitle}>{project.title}</Text>
+                <View style={[styles.statusBadge, { backgroundColor: theme.colors.success.light }]}>
+                  <Text style={styles.statusText}>{project.status}</Text>
+                </View>
+              </View>
+              <Text style={styles.projectDescription} numberOfLines={2}>
+                {project.description}
+              </Text>
+              <View style={styles.projectMeta}>
+                <Text style={styles.projectBudget}>💰 {project.budget} MAD</Text>
+                <Text style={styles.projectCategory}>📁 {project.category}</Text>
+              </View>
+              <View style={styles.projectFooter}>
+                <Text style={styles.projectDate}>📅 {new Date(project.postedDate).toLocaleDateString('fr-FR')}</Text>
+                <Text style={styles.projectProposals}>✉️ {project.proposals} propositions</Text>
+              </View>
+            </Card>
+          </TouchableOpacity>
         ))}
       </View>
 
@@ -295,11 +310,28 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
     padding: theme.spacing.md,
   },
+  projectHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: theme.spacing.sm,
+  },
+  statusBadge: {
+    paddingHorizontal: theme.spacing.sm,
+    paddingVertical: theme.spacing.xs,
+    borderRadius: 12,
+  },
+  statusText: {
+    fontSize: theme.typography.fontSize.xs,
+    fontWeight: theme.typography.fontWeight.medium,
+    color: '#fff',
+  },
   projectTitle: {
     fontSize: theme.typography.fontSize.lg,
     fontWeight: theme.typography.fontWeight.semiBold,
     color: theme.colors.text.primary,
     marginBottom: theme.spacing.xs,
+    flex: 1,
   },
   projectDescription: {
     fontSize: theme.typography.fontSize.sm,
@@ -310,6 +342,7 @@ const styles = StyleSheet.create({
   projectMeta: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: theme.spacing.sm,
   },
   projectBudget: {
     fontSize: theme.typography.fontSize.base,
@@ -320,6 +353,22 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSize.sm,
     color: theme.colors.text.secondary,
     marginLeft: theme.spacing.sm,
+  },
+  projectFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: theme.spacing.sm,
+    paddingTop: theme.spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: theme.colors.border.light,
+  },
+  projectDate: {
+    fontSize: theme.typography.fontSize.xs,
+    color: theme.colors.text.secondary,
+  },
+  projectProposals: {
+    fontSize: theme.typography.fontSize.xs,
+    color: theme.colors.text.secondary,
   },
   notificationCard: {
     marginBottom: theme.spacing.md,

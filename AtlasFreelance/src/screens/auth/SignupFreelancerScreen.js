@@ -1,6 +1,6 @@
 // src/screens/auth/SignupFreelancerScreen.js
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import { theme } from '../../theme';
@@ -20,8 +20,10 @@ export default function SignupFreelancerScreen({ navigation }) {
 
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const handleChange = (field: string, value) => {
+  const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
@@ -148,7 +150,10 @@ export default function SignupFreelancerScreen({ navigation }) {
           value={formData.password}
           onChangeText={value => handleChange('password', value)}
           error={errors.password}
-          secureTextEntry
+          secureTextEntry={!showPassword}
+          leftIcon="🔒"
+          rightIcon={showPassword ? "👁️" : "🙈"}
+          onRightIconPress={() => setShowPassword(!showPassword)}
           helperText="Min. 8 caractères, 1 majuscule, 1 chiffre"
         />
 
@@ -158,7 +163,10 @@ export default function SignupFreelancerScreen({ navigation }) {
           value={formData.confirmPassword}
           onChangeText={value => handleChange('confirmPassword', value)}
           error={errors.confirmPassword}
-          secureTextEntry
+          secureTextEntry={!showConfirmPassword}
+          leftIcon="🔒"
+          rightIcon={showConfirmPassword ? "👁️" : "🙈"}
+          onRightIconPress={() => setShowConfirmPassword(!showConfirmPassword)}
         />
 
         <Button

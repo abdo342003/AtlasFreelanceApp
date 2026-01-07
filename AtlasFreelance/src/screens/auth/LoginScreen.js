@@ -1,6 +1,15 @@
 // src/screens/auth/LoginScreen.js
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  TouchableOpacity, 
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView
+} from 'react-native';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import { theme } from '../../theme';
@@ -15,6 +24,7 @@ export default function LoginScreen({ navigation }) {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -55,49 +65,62 @@ export default function LoginScreen({ navigation }) {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Connexion</Text>
-        <Text style={styles.subtitle}>
-          Connectez-vous à votre compte Atlas Freelance
-        </Text>
+    <KeyboardAvoidingView 
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.content}>
+          <Text style={styles.title}>Connexion</Text>
+          <Text style={styles.subtitle}>
+            Connectez-vous à votre compte Atlas Freelance
+          </Text>
 
-        <View style={styles.form}>
-          <Input
-            label="Email"
-            placeholder="votre@email.com"
-            value={formData.email}
-            onChangeText={value => handleChange('email', value)}
-            error={errors.email}
-            keyboardType="email-address"
-            autoCapitalize="none"
-          />
+          <View style={styles.form}>
+            <Input
+              label="Email"
+              placeholder="votre@email.com"
+              value={formData.email}
+              onChangeText={value => handleChange('email', value)}
+              error={errors.email}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              leftIcon="📧"
+            />
 
-          <Input
-            label="Mot de passe"
-            placeholder="Votre mot de passe"
-            value={formData.password}
-            onChangeText={value => handleChange('password', value)}
-            error={errors.password}
-            secureTextEntry
-          />
+            <Input
+              label="Mot de passe"
+              placeholder="Votre mot de passe"
+              value={formData.password}
+              onChangeText={value => handleChange('password', value)}
+              error={errors.password}
+              secureTextEntry={!showPassword}
+              leftIcon="🔒"
+              rightIcon={showPassword ? "👁️" : "👁️‍🗨️"}
+              onRightIconPress={() => setShowPassword(!showPassword)}
+            />
 
-          <TouchableOpacity
-            style={styles.forgotPassword}
-            onPress={() => navigation.navigate('ForgotPassword')}
-          >
-            <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
-          </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.forgotPassword}
+              onPress={() => navigation.navigate('ForgotPassword')}
+            >
+              <Text style={styles.forgotPasswordText}>Mot de passe oublié ?</Text>
+            </TouchableOpacity>
 
-          <Button
-            title="Se connecter"
-            onPress={handleSubmit}
-            loading={loading}
-            size="lg"
-            fullWidth
-          />
+            <Button
+              title="Se connecter"
+              onPress={handleSubmit}
+              loading={loading}
+              disabled={loading}
+              size="lg"
+              fullWidth
+            />
 
-          {/* Demo buttons */}
+            {/* Demo buttons */}
           <View style={styles.demoButtons}>
             <Button
               title="Demo: Admin"
@@ -122,8 +145,8 @@ export default function LoginScreen({ navigation }) {
             <Text style={styles.footerLink}>S'inscrire</Text>
           </TouchableOpacity>
         </View>
-      </View>
-    </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
@@ -131,6 +154,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: theme.colors.background.secondary,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   content: {
     flex: 1,

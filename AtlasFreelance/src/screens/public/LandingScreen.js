@@ -1,15 +1,52 @@
 // src/screens/public/LandingScreen.js
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import React, { useRef, useEffect } from 'react';
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  Animated, 
+  TouchableOpacity,
+  Dimensions 
+} from 'react-native';
 import Button from '../../components/ui/Button';
 import Card from '../../components/ui/Card';
 import { theme } from '../../theme';
 
+const { width } = Dimensions.get('window');
+
 export default function LandingScreen({ navigation }) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(50)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        tension: 20,
+        friction: 7,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       {/* Hero Section */}
-      <View style={styles.hero}>
+      <Animated.View 
+        style={[
+          styles.hero,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         <Text style={styles.heroTitle}>
           Trouvez les meilleurs{'\n'}
           <Text style={styles.heroHighlight}>talents freelances</Text>
@@ -22,7 +59,7 @@ export default function LandingScreen({ navigation }) {
         <View style={styles.heroButtons}>
           <Button
             title="Commencer"
-            onPress={() => navigation.navigate('Auth')}
+            onPress={() => navigation.navigate('Auth', { screen: 'SignupRole' })}
             size="lg"
             fullWidth
           />
@@ -34,43 +71,51 @@ export default function LandingScreen({ navigation }) {
             fullWidth
           />
         </View>
-      </View>
+      </Animated.View>
 
       {/* Features Section */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Pourquoi Atlas Freelance ?</Text>
         
-        <Card style={styles.featureCard}>
-          <Text style={styles.featureIcon}>🎯</Text>
-          <Text style={styles.featureTitle}>Talents vérifiés</Text>
-          <Text style={styles.featureDescription}>
-            Tous nos freelancers sont sélectionnés et vérifiés pour garantir la qualité
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('About')}>
+          <Card style={styles.featureCard} variant="elevated">
+            <Text style={styles.featureIcon}>🎯</Text>
+            <Text style={styles.featureTitle}>Talents vérifiés</Text>
+            <Text style={styles.featureDescription}>
+              Tous nos freelancers sont sélectionnés et vérifiés pour garantir la qualité
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.featureCard}>
-          <Text style={styles.featureIcon}>💰</Text>
-          <Text style={styles.featureTitle}>Paiements sécurisés</Text>
-          <Text style={styles.featureDescription}>
-            Système de paiement escrow pour protéger clients et freelancers
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('About')}>
+          <Card style={styles.featureCard} variant="elevated">
+            <Text style={styles.featureIcon}>💰</Text>
+            <Text style={styles.featureTitle}>Paiements sécurisés</Text>
+            <Text style={styles.featureDescription}>
+              Système de paiement escrow pour protéger clients et freelancers
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.featureCard}>
-          <Text style={styles.featureIcon}>⚡</Text>
-          <Text style={styles.featureTitle}>Livraison rapide</Text>
-          <Text style={styles.featureDescription}>
-            Des projets livrés dans les délais avec suivi en temps réel
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('HowItWorks')}>
+          <Card style={styles.featureCard} variant="elevated">
+            <Text style={styles.featureIcon}>⚡</Text>
+            <Text style={styles.featureTitle}>Livraison rapide</Text>
+            <Text style={styles.featureDescription}>
+              Des projets livrés dans les délais avec suivi en temps réel
+            </Text>
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.featureCard}>
-          <Text style={styles.featureIcon}>🛡️</Text>
-          <Text style={styles.featureTitle}>Support 24/7</Text>
-          <Text style={styles.featureDescription}>
-            Une équipe dédiée pour vous accompagner à chaque étape
-          </Text>
-        </Card>
+        <TouchableOpacity activeOpacity={0.8} onPress={() => navigation.navigate('About')}>
+          <Card style={styles.featureCard} variant="elevated">
+            <Text style={styles.featureIcon}>🛡️</Text>
+            <Text style={styles.featureTitle}>Support 24/7</Text>
+            <Text style={styles.featureDescription}>
+              Une équipe dédiée pour vous accompagner à chaque étape
+            </Text>
+          </Card>
+        </TouchableOpacity>
       </View>
 
       {/* Stats Section */}
@@ -103,23 +148,24 @@ export default function LandingScreen({ navigation }) {
           Rejoignez des milliers de freelancers et clients satisfaits
         </Text>
         <Button
-          title="Créer un compte"
-          onPress={() => navigation.navigate('Auth')}
+          title="Créer un compte gratuitement"
+          onPress={() => navigation.navigate('Auth', { screen: 'SignupRole' })}
           size="lg"
         />
       </View>
 
       <View style={styles.footer}>
-        <Button
-          title="À propos"
-          onPress={() => navigation.navigate('About')}
-          variant="ghost"
-        />
-        <Button
-          title="Tarifs"
-          onPress={() => navigation.navigate('Pricing')}
-          variant="ghost"
-        />
+        <TouchableOpacity onPress={() => navigation.navigate('About')}>
+          <Text style={styles.footerLink}>À propos</Text>
+        </TouchableOpacity>
+        <Text style={styles.footerSeparator}>•</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Pricing')}>
+          <Text style={styles.footerLink}>Tarifs</Text>
+        </TouchableOpacity>
+        <Text style={styles.footerSeparator}>•</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('HowItWorks')}>
+          <Text style={styles.footerLink}>Comment ça marche</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -237,7 +283,17 @@ const styles = StyleSheet.create({
   footer: {
     flexDirection: 'row',
     justifyContent: 'center',
+    alignItems: 'center',
     gap: theme.spacing.base,
     paddingBottom: theme.spacing['2xl'],
+  },
+  footerLink: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.primary.main,
+    fontWeight: theme.typography.fontWeight.medium,
+  },
+  footerSeparator: {
+    fontSize: theme.typography.fontSize.sm,
+    color: theme.colors.text.tertiary,
   },
 });

@@ -1,103 +1,137 @@
 // src/screens/public/PricingScreen.js
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Animated, TouchableOpacity } from 'react-native';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import { theme } from '../../theme';
 
 export default function PricingScreen({ navigation }) {
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const slideAnim = useRef(new Animated.Value(30)).current;
+
+  useEffect(() => {
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 800,
+        useNativeDriver: true,
+      }),
+      Animated.spring(slideAnim, {
+        toValue: 0,
+        friction: 8,
+        tension: 40,
+        useNativeDriver: true,
+      }),
+    ]).start();
+  }, []);
+
   return (
     <ScrollView style={styles.container}>
-      <View style={styles.header}>
+      <Animated.View 
+        style={[
+          styles.header,
+          {
+            opacity: fadeAnim,
+            transform: [{ translateY: slideAnim }],
+          },
+        ]}
+      >
         <Text style={styles.title}>Tarifs simples et transparents</Text>
         <Text style={styles.subtitle}>
           Choisissez l'option qui vous convient le mieux
         </Text>
-      </View>
+      </Animated.View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Pour les clients</Text>
         
-        <Card style={styles.pricingCard}>
-          <Text style={styles.planName}>Gratuit</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>0 DH</Text>
-            <Text style={styles.period}>/mois</Text>
-          </View>
-          <View style={styles.featuresList}>
-            <Text style={styles.feature}>✓ Publication illimitée de projets</Text>
-            <Text style={styles.feature}>✓ Accès à tous les freelancers</Text>
-            <Text style={styles.feature}>✓ Support par email</Text>
-            <Text style={styles.feature}>✓ Paiement sécurisé</Text>
-          </View>
-          <Text style={styles.commission}>Commission: 5% sur chaque projet</Text>
-          <Button
-            title="Commencer gratuitement"
-            onPress={() => navigation.navigate('Auth')}
-            variant="primary"
-          />
-        </Card>
+        <TouchableOpacity activeOpacity={0.9}>
+          <Card variant="elevated" style={styles.pricingCard}>
+            <Text style={styles.planName}>Gratuit</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>0 DH</Text>
+              <Text style={styles.period}>/mois</Text>
+            </View>
+            <View style={styles.featuresList}>
+              <Text style={styles.feature}>✓ Publication illimitée de projets</Text>
+              <Text style={styles.feature}>✓ Accès à tous les freelancers</Text>
+              <Text style={styles.feature}>✓ Support par email</Text>
+              <Text style={styles.feature}>✓ Paiement sécurisé</Text>
+            </View>
+            <Text style={styles.commission}>Commission: 5% sur chaque projet</Text>
+            <Button
+              title="Commencer gratuitement"
+              onPress={() => navigation.navigate('Auth')}
+              variant="primary"
+            />
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.pricingCard}>
-          <View style={styles.popularBadge}>
-            <Text style={styles.popularText}>POPULAIRE</Text>
-          </View>
-          <Text style={styles.planName}>Pro</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>299 DH</Text>
-            <Text style={styles.period}>/mois</Text>
-          </View>
-          <View style={styles.featuresList}>
-            <Text style={styles.feature}>✓ Tout du plan Gratuit</Text>
-            <Text style={styles.feature}>✓ Support prioritaire 24/7</Text>
-            <Text style={styles.feature}>✓ Gestionnaire de compte dédié</Text>
-            <Text style={styles.feature}>✓ Facturation automatisée</Text>
-            <Text style={styles.feature}>✓ Statistiques avancées</Text>
-          </View>
-          <Text style={styles.commission}>Commission: 2% sur chaque projet</Text>
-          <Button
-            title="Passer au Pro"
-            onPress={() => navigation.navigate('Auth')}
-            variant="primary"
-          />
-        </Card>
+        <TouchableOpacity activeOpacity={0.9}>
+          <Card variant="elevated" style={styles.pricingCard}>
+            <View style={styles.popularBadge}>
+              <Text style={styles.popularText}>POPULAIRE</Text>
+            </View>
+            <Text style={styles.planName}>Pro</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>299 DH</Text>
+              <Text style={styles.period}>/mois</Text>
+            </View>
+            <View style={styles.featuresList}>
+              <Text style={styles.feature}>✓ Tout du plan Gratuit</Text>
+              <Text style={styles.feature}>✓ Support prioritaire 24/7</Text>
+              <Text style={styles.feature}>✓ Gestionnaire de compte dédié</Text>
+              <Text style={styles.feature}>✓ Facturation automatisée</Text>
+              <Text style={styles.feature}>✓ Statistiques avancées</Text>
+            </View>
+            <Text style={styles.commission}>Commission: 2% sur chaque projet</Text>
+            <Button
+              title="Passer au Pro"
+              onPress={() => navigation.navigate('Auth')}
+              variant="primary"
+            />
+          </Card>
+        </TouchableOpacity>
       </View>
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Pour les freelancers</Text>
         
-        <Card style={styles.pricingCard}>
-          <Text style={styles.planName}>Gratuit</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>0 DH</Text>
-            <Text style={styles.period}>/mois</Text>
-          </View>
-          <View style={styles.featuresList}>
-            <Text style={styles.feature}>✓ Profil freelance</Text>
-            <Text style={styles.feature}>✓ Soumission de propositions</Text>
-            <Text style={styles.feature}>✓ Portfolio en ligne</Text>
-            <Text style={styles.feature}>✓ 3 projets simultanés max</Text>
-          </View>
-          <Text style={styles.commission}>Commission: 10% sur chaque projet</Text>
-          <Button
-            title="Créer mon profil"
-            onPress={() => navigation.navigate('Auth')}
-            variant="outline"
-          />
-        </Card>
+        <TouchableOpacity activeOpacity={0.9}>
+          <Card variant="elevated" style={styles.pricingCard}>
+            <Text style={styles.planName}>Gratuit</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>0 DH</Text>
+              <Text style={styles.period}>/mois</Text>
+            </View>
+            <View style={styles.featuresList}>
+              <Text style={styles.feature}>✓ Profil freelance</Text>
+              <Text style={styles.feature}>✓ Soumission de propositions</Text>
+              <Text style={styles.feature}>✓ Portfolio en ligne</Text>
+              <Text style={styles.feature}>✓ 3 projets simultanés max</Text>
+            </View>
+            <Text style={styles.commission}>Commission: 10% sur chaque projet</Text>
+            <Button
+              title="Créer mon profil"
+              onPress={() => navigation.navigate('Auth')}
+              variant="outline"
+            />
+          </Card>
+        </TouchableOpacity>
 
-        <Card style={styles.pricingCard}>
-          <View style={styles.popularBadge}>
-            <Text style={styles.popularText}>RECOMMANDÉ</Text>
-          </View>
-          <Text style={styles.planName}>Premium</Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>199 DH</Text>
-            <Text style={styles.period}>/mois</Text>
-          </View>
-          <View style={styles.featuresList}>
-            <Text style={styles.feature}>✓ Tout du plan Gratuit</Text>
-            <Text style={styles.feature}>✓ Badge vérifié</Text>
+        <TouchableOpacity activeOpacity={0.9}>
+          <Card variant="elevated" style={styles.pricingCard}>
+            <View style={styles.popularBadge}>
+              <Text style={styles.popularText}>RECOMMANDÉ</Text>
+            </View>
+            <Text style={styles.planName}>Premium</Text>
+            <View style={styles.priceContainer}>
+              <Text style={styles.price}>199 DH</Text>
+              <Text style={styles.period}>/mois</Text>
+            </View>
+            <View style={styles.featuresList}>
+              <Text style={styles.feature}>✓ Tout du plan Gratuit</Text>
+              <Text style={styles.feature}>✓ Badge vérifié</Text>
             <Text style={styles.feature}>✓ Projets illimités</Text>
             <Text style={styles.feature}>✓ Visibilité améliorée</Text>
             <Text style={styles.feature}>✓ Propositions prioritaires</Text>
