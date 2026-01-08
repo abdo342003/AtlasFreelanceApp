@@ -29,6 +29,35 @@ export const validators = {
     return null;
   },
 
+  validateEmail: (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  },
+
+  validateBudget: (min, max) => {
+    const minNum = parseFloat(min);
+    const maxNum = parseFloat(max);
+    
+    if (!minNum || !maxNum) return 'Budget requis';
+    if (minNum <= 0 || maxNum <= 0) return 'Budget doit être > 0';
+    if (minNum > maxNum) return 'Budget minimum > maximum';
+    return null;
+  },
+
+  validateDate: (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    
+    if (isNaN(date.getTime())) return 'Date invalide';
+    if (date < now) return 'La date doit être future';
+    return null;
+  },
+
+  validateSkills: (skills) => {
+    if (!skills || skills.length === 0) return 'Au moins une compétence requise';
+    return null;
+  },
+
   password: (value) => {
     if (value.length < 8) {
       return 'Le mot de passe doit contenir au moins 8 caractères';

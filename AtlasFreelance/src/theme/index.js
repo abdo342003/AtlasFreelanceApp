@@ -37,6 +37,12 @@ export const theme = {
       dark: '#0891b2',
       contrast: '#ffffff',
     },
+    status: {
+      success: '#10b981',
+      warning: '#f59e0b',
+      error: '#ef4444',
+      info: '#06b6d4',
+    },
     background: {
       primary: '#ffffff',
       secondary: '#f8fafc',

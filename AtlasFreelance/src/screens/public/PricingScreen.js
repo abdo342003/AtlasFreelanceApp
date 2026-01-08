@@ -144,7 +144,8 @@ export default function PricingScreen({ navigation }) {
             variant="primary"
           />
         </Card>
-      </View>
+        </TouchableOpacity>
+      </View> 
 
       <View style={styles.faqSection}>
         <Text style={styles.sectionTitle}>Questions fréquentes</Text>

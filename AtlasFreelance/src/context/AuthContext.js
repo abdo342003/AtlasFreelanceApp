@@ -54,6 +54,7 @@ export function AuthProvider({ children }) {
     };
     setUser(adminUser);
     await saveUserToStorage(adminUser);
+    return { success: true, data: adminUser };
   };
 
   // Regular user login
@@ -67,6 +68,21 @@ export function AuthProvider({ children }) {
     };
     setUser(regularUser);
     await saveUserToStorage(regularUser);
+    return { success: true, data: regularUser };
+  };
+
+  // Client login
+  const loginAsClient = async () => {
+    const clientUser = { 
+      id: 'client-1',
+      email: 'client@atlas.com', 
+      name: 'Client Atlas',
+      role: 'client',
+      token: 'client-token-' + Date.now()
+    };
+    setUser(clientUser);
+    await saveUserToStorage(clientUser);
+    return { success: true, data: clientUser };
   };
 
   // Login with credentials (real auth)
@@ -84,11 +100,15 @@ export function AuthProvider({ children }) {
       await new Promise(resolve => setTimeout(resolve, 1000));
       
       // Mock user based on email
+      let role = 'user';
+      if (email.includes('admin')) role = 'admin';
+      if (email.includes('client')) role = 'client';
+      
       const userData = {
         id: email.includes('admin') ? 'admin-1' : 'user-' + Date.now(),
         email,
         name: email.includes('admin') ? 'Admin User' : 'Regular User',
-        role: email.includes('admin') ? 'admin' : 'user',
+        role: role,
         token: 'token-' + Date.now(),
       };
       
@@ -138,6 +158,7 @@ export function AuthProvider({ children }) {
     signup,
     loginAsAdmin,
     loginAsUser,
+    loginAsClient,
     logout,
   };
 

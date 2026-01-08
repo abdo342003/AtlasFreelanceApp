@@ -100,6 +100,81 @@ export const projectService = {
   },
 
   /**
+   * Get client's own projects
+   */
+  async getClientProjects(clientId) {
+    try {
+      await delay(1000);
+      
+      // Mock data - remplacer par vrai API call
+      const projects = [
+        {
+          id: '1',
+          title: 'Développement application mobile',
+          description: 'Création d\'une application mobile pour la gestion de livraisons',
+          status: 'open',
+          budgetMin: 5000,
+          budgetMax: 10000,
+          category: 'Développement',
+          createdAt: '2025-01-06T10:00:00',
+          proposalCount: 12,
+          deadline: '2025-03-15',
+          skills: ['React Native', 'Firebase', 'API'],
+        },
+        {
+          id: '2',
+          title: 'Design de logo et identité visuelle',
+          description: 'Besoin d\'un designer pour créer un logo moderne et une charte graphique',
+          status: 'in_progress',
+          budgetMin: 2000,
+          budgetMax: 3500,
+          category: 'Design',
+          createdAt: '2025-01-03T14:30:00',
+          proposalCount: 8,
+          deadline: '2025-02-10',
+          skills: ['Illustrator', 'Photoshop', 'Branding'],
+        },
+        {
+          id: '3',
+          title: 'Rédaction contenu SEO',
+          description: 'Rédaction d\'articles optimisés SEO pour site e-commerce',
+          status: 'completed',
+          budgetMin: 1500,
+          budgetMax: 2500,
+          category: 'Rédaction',
+          createdAt: '2024-12-20T09:15:00',
+          proposalCount: 5,
+          deadline: '2025-01-20',
+          skills: ['SEO', 'Copywriting', 'WordPress'],
+        },
+        {
+          id: '4',
+          title: 'Développement site e-commerce',
+          description: 'Site vitrine avec système de paiement intégré',
+          status: 'open',
+          budgetMin: 8000,
+          budgetMax: 15000,
+          category: 'Développement',
+          createdAt: '2025-01-05T16:45:00',
+          proposalCount: 15,
+          deadline: '2025-04-01',
+          skills: ['Shopify', 'WooCommerce', 'Payment Gateway'],
+        },
+      ];
+      
+      return {
+        success: true,
+        data: projects,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.message || 'Failed to get client projects',
+      };
+    }
+  },
+
+  /**
    * Create new project
    */
   async createProject(projectData, token) {

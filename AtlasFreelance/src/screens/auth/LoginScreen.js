@@ -17,7 +17,7 @@ import { useAuth } from '../../context/AuthContext';
 import { validateForm, validators } from '../../utils/validation';
 
 export default function LoginScreen({ navigation }) {
-  const { loginAsAdmin, loginAsUser, login } = useAuth();
+  const { loginAsAdmin, loginAsUser, loginAsClient, login } = useAuth();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -30,6 +30,18 @@ export default function LoginScreen({ navigation }) {
     setFormData(prev => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
+    }
+  };
+
+  const handleDemoLogin = async (demoFunction) => {
+    setLoading(true);
+    try {
+      await demoFunction();
+    } catch (error) {
+      console.error('Demo login error:', error);
+      Alert.alert('Erreur', 'Une erreur est survenue lors de la connexion.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -53,8 +65,8 @@ export default function LoginScreen({ navigation }) {
     try {
       const response = await login(formData.email, formData.password);
       
-      if (!response.success) {
-        Alert.alert('Erreur', response.error || 'Identifiants incorrects. Veuillez réessayer.');
+      if (response && !response.success) {
+        Alert.alert('Erreur', response?.error || 'Identifiants incorrects. Veuillez réessayer.');
       }
       // Navigation is handled automatically by AuthContext/App.js
     } catch (error) {
@@ -124,17 +136,27 @@ export default function LoginScreen({ navigation }) {
           <View style={styles.demoButtons}>
             <Button
               title="Demo: Admin"
-              onPress={loginAsAdmin}
+              onPress={() => handleDemoLogin(loginAsAdmin)}
               variant="outline"
               size="sm"
               fullWidth
+              loading={loading}
             />
             <Button
               title="Demo: User"
-              onPress={loginAsUser}
+              onPress={() => handleDemoLogin(loginAsUser)}
               variant="outline"
               size="sm"
               fullWidth
+              loading={loading}
+            />
+            <Button
+              title="Demo: Client"
+              onPress={() => handleDemoLogin(loginAsClient)}
+              variant="outline"
+              size="sm"
+              fullWidth
+              loading={loading}
             />
           </View>
         </View>
@@ -144,6 +166,7 @@ export default function LoginScreen({ navigation }) {
           <TouchableOpacity onPress={() => navigation.navigate('SignupRole')}>
             <Text style={styles.footerLink}>S'inscrire</Text>
           </TouchableOpacity>
+        </View>
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
